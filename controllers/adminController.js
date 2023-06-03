@@ -23,23 +23,6 @@ const registerAdmin = async (req, res) => {
     });
   }
 
-  // Checking existing admin
-  let foundUser;
-  try {
-    foundUser = await Admin.find({ email }).exec();
-  } catch (error) {
-    return res.status(500).send({
-      error: "An error occurred while querying the database",
-      description: error,
-    });
-  }
-
-  if (foundUser.length > 0) {
-    return res.status(400).send({
-      error: "This user has already registered!",
-    });
-  }
-
   // Creating new admin
   const admin = new Admin({
     email,
@@ -47,6 +30,13 @@ const registerAdmin = async (req, res) => {
   });
 
   try {
+    foundUser = await Admin.find({ email }).exec();
+    if (foundUser.length > 0) {
+      return res.status(400).send({
+        error: "This user has already registered!",
+      });
+    }
+
     await admin.save();
   } catch (error) {
     return res.status(500).send({
