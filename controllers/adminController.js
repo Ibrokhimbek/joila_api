@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Admin = require("../models/Admin");
 
@@ -23,12 +24,6 @@ const registerAdmin = async (req, res) => {
     });
   }
 
-  // Creating new admin
-  const admin = new Admin({
-    email,
-    password,
-  });
-
   try {
     foundUser = await Admin.find({ email }).exec();
     if (foundUser.length > 0) {
@@ -36,6 +31,14 @@ const registerAdmin = async (req, res) => {
         error: "This user has already registered!",
       });
     }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(hashedPassword);
+    // Creating new admin
+    const admin = new Admin({
+      email,
+      password: hashedPassword,
+    });
 
     await admin.save();
   } catch (error) {
@@ -57,6 +60,21 @@ const registerAdmin = async (req, res) => {
     message: "Admin created successfully",
     token,
   });
+};
+
+const loginAdmin = async (req, res) => {
+  const { email, password } = req.body;
+
+  let errorMessage = "";
+  if (!email || !password) {
+    errorMessage = "Email and Password are required";
+  }
+
+  if (errorMessage) {
+    return res.status(400).send({
+      error: errorMessage,
+    });
+  }
 };
 
 module.exports = {
