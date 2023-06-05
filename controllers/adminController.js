@@ -25,7 +25,7 @@ const registerAdmin = async (req, res) => {
   }
 
   try {
-    foundUser = await Admin.find({ email }).exec();
+    const foundUser = await Admin.find({ email }).exec();
     if (foundUser.length > 0) {
       return res.status(400).send({
         error: "This user has already registered!",
@@ -75,8 +75,45 @@ const loginAdmin = async (req, res) => {
       error: errorMessage,
     });
   }
+
+  try {
+    const foundUser = await Admin.find({ email }).exec();
+    console.log(foundUser);
+    if (foundUser.length > 0) {
+      bcrypt.compare(password, foundUser[0].password, (err, decoded) => {
+        if (!decoded) {
+          return res.status(400).send({
+            error: "Invalid Password",
+          });
+        }
+        const token = jwt.sign(
+          {
+            email,
+            role: "admin",
+          },
+          process.env.jwt_secret_key
+        );
+
+        return res.status(200).send({
+          message: "Admin successfully authenticated",
+          token,
+        });
+      });
+    } else {
+      return res.status(400).send({
+        error: "User not found",
+      });
+    }
+  } catch (err) {
+    if (err) {
+      return res.status(500).send({
+        error,
+      });
+    }
+  }
 };
 
 module.exports = {
   registerAdmin,
+  loginAdmin,
 };
