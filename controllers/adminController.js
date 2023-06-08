@@ -33,7 +33,6 @@ const registerAdmin = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword);
     // Creating new admin
     const admin = new Admin({
       email,
@@ -78,7 +77,6 @@ const loginAdmin = async (req, res) => {
 
   try {
     const foundUser = await Admin.find({ email }).exec();
-    console.log(foundUser);
     if (foundUser.length > 0) {
       bcrypt.compare(password, foundUser[0].password, (err, decoded) => {
         if (!decoded) {
@@ -105,11 +103,9 @@ const loginAdmin = async (req, res) => {
       });
     }
   } catch (err) {
-    if (err) {
-      return res.status(500).send({
-        err,
-      });
-    }
+    return res.status(500).send({
+      err,
+    });
   }
 };
 

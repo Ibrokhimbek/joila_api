@@ -3,14 +3,14 @@ const { Schema } = mongoose;
 
 const OrderSchema = new Schema(
   {
-    clientId: {
-      type: Schema.Types.ObjectId,
-      ref: "Client",
-      required: true,
+    market_id: {
+      type: String,
+      default: null,
     },
-    sellerId: {
+    employee_id: {
       type: Schema.Types.ObjectId,
       ref: "Employee",
+      required: true,
     },
     products: [
       {

@@ -11,6 +11,12 @@ const EmployerSchema = new Schema({
     type: String,
     required: true,
   },
+  balance: {
+    type: String,
+    required: true,
+    min: 0,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model("Employer", EmployerSchema);
