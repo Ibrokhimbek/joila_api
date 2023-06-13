@@ -64,6 +64,8 @@ const registerAdmin = async (req, res) => {
 const loginAdmin = async (req, res) => {
   const { email, password } = req.body;
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   let errorMessage = "";
   if (!email || !password) {
     errorMessage = "Email and Password are required";
@@ -72,6 +74,10 @@ const loginAdmin = async (req, res) => {
   if (errorMessage) {
     return res.status(400).send({
       error: errorMessage,
+    });
+  } else if (!emailRegex.test(email)) {
+    return res.status(400).send({
+      error: "Invalid email address",
     });
   }
 
