@@ -11,14 +11,20 @@ const EmployeeSchema = new Schema({
     required: true,
     unique: true,
   },
+  password: {
+    type: String,
+    required: true,
+  },
   balance: {
     type: Number,
     default: 0,
     min: 0,
   },
-  password: {
-    type: String,
+  debt: {
+    type: Number,
     required: true,
+    min: 0,
+    default: 0,
   },
 });
 
