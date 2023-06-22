@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const Admin = require("../models/Admin");
 const Employer = require("../models/Employer");
 
+//* POST => register
 const registerAdmin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -62,6 +63,7 @@ const registerAdmin = async (req, res) => {
   });
 };
 
+//* POST => login
 const loginAdmin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -116,10 +118,11 @@ const loginAdmin = async (req, res) => {
   }
 };
 
+//* POST => createEmployer
 const createEmployer = async (req, res) => {
   const { fullname, phone_number, password } = req.body;
 
-  // Validate email format
+  // Validate phone number format
   const phoneNumberRegEx = /^(\+998)[ -]?\d{2}[ -]?\d{3}[ -]?\d{2}[ -]?\d{2}$/;
 
   let errorMessage = "";
@@ -148,7 +151,7 @@ const createEmployer = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     console.log(req.adminId);
-    // Creating new admin
+    // Creating new employer
     const employer = new Employer({
       fullname,
       phone_number,

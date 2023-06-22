@@ -6,6 +6,10 @@ const {
 const adminAuth = require("../middlewares/adminAuth");
 
 function adminRoutes(fastify, options, done) {
+  fastify.get("/", (req, res) => {
+    res.send("API is working");
+  });
+
   fastify.post("/admin/register", registerAdmin);
 
   fastify.post("/admin/login", loginAdmin);
