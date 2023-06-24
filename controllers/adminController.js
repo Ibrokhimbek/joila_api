@@ -118,72 +118,7 @@ const loginAdmin = async (req, res) => {
   }
 };
 
-//* POST => createEmployer
-const createEmployer = async (req, res) => {
-  const { fullname, phone_number, password } = req.body;
-
-  // Validate phone number format
-  const phoneNumberRegEx = /^(\+998)[ -]?\d{2}[ -]?\d{3}[ -]?\d{2}[ -]?\d{2}$/;
-
-  let errorMessage = "";
-
-  if (!phone_number || !password) {
-    errorMessage = "Please provide phone number and password";
-  } else if (!phoneNumberRegEx.test(phone_number)) {
-    errorMessage = "Invalid phone number format";
-  } else if (password.length < 8) {
-    errorMessage = "Password must be at least 8 characters long";
-  }
-
-  if (errorMessage) {
-    return res.status(400).send({
-      error: errorMessage,
-    });
-  }
-
-  try {
-    const foundUser = await Employer.find({ phone_number }).exec();
-    if (foundUser.length > 0) {
-      return res.status(400).send({
-        error: "This employer has already registered!",
-      });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(req.adminId);
-    // Creating new employer
-    const employer = new Employer({
-      fullname,
-      phone_number,
-      admin_id: req.adminId,
-      password: hashedPassword,
-    });
-
-    await employer.save();
-  } catch (error) {
-    return res.status(500).send({
-      error: "An error occurred while creating the employer",
-      description: error,
-    });
-  }
-
-  const token = jwt.sign(
-    {
-      fullname,
-      phone_number,
-      role: "employer",
-    },
-    process.env.jwt_secret_key
-  );
-
-  res.status(201).send({
-    message: "Employer created successfully",
-    token,
-  });
-};
-
 module.exports = {
   registerAdmin,
   loginAdmin,
-  createEmployer,
 };

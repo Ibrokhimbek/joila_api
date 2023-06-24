@@ -1,24 +1,10 @@
-const {
-  registerAdmin,
-  loginAdmin,
-  createEmployer,
-} = require("../controllers/adminController");
-const adminAuth = require("../middlewares/adminAuth");
+const { registerAdmin, loginAdmin } = require("../controllers/adminController");
+const auth = require("../middlewares/auth");
 
 function adminRoutes(fastify, options, done) {
-  fastify.get("/", (req, res) => {
-    res.send("API is working");
-  });
+  fastify.post("/register", registerAdmin);
 
-  fastify.post("/admin/register", registerAdmin);
-
-  fastify.post("/admin/login", loginAdmin);
-
-  fastify.post(
-    "/admin/createEmployer",
-    { preHandler: [adminAuth] },
-    createEmployer
-  );
+  fastify.post("/login", loginAdmin);
 
   done();
 }
