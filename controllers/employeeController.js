@@ -120,8 +120,18 @@ const loginEmployee = async (req, res) => {
 
 //* GET => All employers
 const getAllEmployees = async (req, res) => {
+  const employerId = req.employerId || req.headers.w;
+
+  if (!employerId) {
+    return res.status(400).send({
+      message: "Employer's id is required",
+    });
+  }
+
   try {
-    const employees = await Employee.find().exec();
+    const employees = await Employee.find({
+      employer_id: employerId,
+    });
 
     if (employees.length > 0) {
       return res
