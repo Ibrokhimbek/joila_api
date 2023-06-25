@@ -15,6 +15,10 @@ const EmployeeSchema = new Schema({
     type: String,
     required: true,
   },
+  employer_id: {
+    type: String,
+    required: true,
+  },
   balance: {
     type: Number,
     default: 0,

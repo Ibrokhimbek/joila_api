@@ -113,13 +113,19 @@ const loginEmployer = async (req, res) => {
 
 //* GET => All employers
 const getAllEmployers = async (req, res) => {
-  const employers = await Employer.find().exec();
+  try {
+    const employers = await Employer.find().exec();
 
-  if (employers.length > 0) {
-    return res.code(200).send({ employers: [...employers] });
+    if (employers.length > 0) {
+      return res
+        .code(200)
+        .send({ message: "Employees were found", employers: [...employers] });
+    }
+
+    return res.code(200).send({ message: "There are no employers" });
+  } catch (error) {
+    return res.code(500).send({ message: error });
   }
-
-  return res.code(200).send({ message: "There are no employers" });
 };
 
 //* GET => Get one employer

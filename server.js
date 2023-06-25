@@ -27,15 +27,18 @@ fastify.register(require("./routes/adminRoutes"), {
 fastify.register(require("./routes/employerRoutes"), {
   prefix: "/api/v1/employer",
 });
+fastify.register(require("./routes/employeeRoutes"), {
+  prefix: "/api/v1/employee",
+});
 
 //? Database setup
-mongoose;
-// .connect("mongodb://127.0.0.1:27017/iDev", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// })
-// .then(() => console.log("MongoDB connected"))
-// .catch((err) => console.error("MongoDB connection error:", err));
+// mongoose
+//   .connect("mongodb://127.0.0.1:27017/iDev", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log("MongoDB connected"))
+//   .catch((err) => console.error("MongoDB connection error:", err));
 
 //* Database connection
 mongoose.set("strictQuery", true);
