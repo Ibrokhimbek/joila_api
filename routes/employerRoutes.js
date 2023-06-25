@@ -18,22 +18,18 @@ function employerRoutes(fastify, options, done) {
 
   fastify.post("/login", loginEmployer);
 
-  fastify.get("/all", { preHandler: [auth(["admin"])] }, getAllEmployers);
+  fastify.get("/", { preHandler: [auth(["admin"])] }, getAllEmployers);
 
   fastify.get(
-    "/getOne/:id",
+    "/:id",
     { preHandler: [auth(["admin", "employer"])] },
     getEmployer
   );
 
-  fastify.delete(
-    "/delete/:id",
-    { preHandler: [auth(["admin"])] },
-    deleteEmployer
-  );
+  fastify.delete("/:id", { preHandler: [auth(["admin"])] }, deleteEmployer);
 
   fastify.put(
-    "/edit/:id",
+    "/:id",
     { preHandler: [auth(["admin", "employer"])] },
     editEmployer
   );
