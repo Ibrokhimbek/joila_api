@@ -14,6 +14,7 @@ fastify.register(require("@fastify/swagger"), {
       version: "1.0.0",
     },
     tags: [
+      { name: "API", description: "Test related end-points" },
       { name: "Admin", description: "Super Admin related end-points" },
       { name: "Employer", description: "Employer related end-points" },
       { name: "Employee", description: "Employee related end-points" },
@@ -23,7 +24,7 @@ fastify.register(require("@fastify/swagger"), {
 
 const mongoose = require("mongoose");
 
-fastify.get("/", (req, res) => {
+fastify.get("/", { schema: { tags: ["API"] } }, (req, res) => {
   res.send("Api is working");
 });
 fastify.register(require("./routes/adminRoutes"), {
@@ -37,19 +38,19 @@ fastify.register(require("./routes/employeeRoutes"), {
 });
 
 //? Database setup
-// mongoose
-//   .connect("mongodb://127.0.0.1:27017/iDev", {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => console.log("MongoDB connected"))
-//   .catch((err) => console.error("MongoDB connection error:", err));
+mongoose
+  .connect("mongodb://127.0.0.1:27017/iDev", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 //* Database connection
-mongoose.set("strictQuery", true);
-mongoose.connect(process.env.DB_CONNECTION).then(() => {
-  console.log("Connected");
-});
+// mongoose.set("strictQuery", true);
+// mongoose.connect(process.env.DB_CONNECTION).then(() => {
+//   console.log("Connected");
+// });
 
 fastify.addHook("onClose", async () => {
   await mongoose.connection.close();

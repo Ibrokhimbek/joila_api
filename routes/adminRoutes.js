@@ -2,25 +2,19 @@ const { registerAdmin, loginAdmin } = require("../controllers/adminController");
 const auth = require("../middlewares/auth");
 
 function adminRoutes(fastify, options, done) {
-  fastify.post(
-    "/register",
-    {
-      schema: {
-        tags: ["Admin"],
-      },
+  fastify.post("/register", {
+    schema: {
+      tags: ["Admin"],
     },
-    registerAdmin
-  );
+    handler: registerAdmin,
+  });
 
-  fastify.post(
-    "/login",
-    {
-      schema: {
-        tags: ["Admin"],
-      },
+  fastify.post("/login", {
+    schema: {
+      tags: ["Admin"],
     },
-    loginAdmin
-  );
+    handler: loginAdmin,
+  });
 
   done();
 }

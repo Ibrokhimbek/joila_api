@@ -10,70 +10,52 @@ const {
 const auth = require("../middlewares/auth");
 
 function employerRoutes(fastify, options, done) {
-  fastify.post(
-    "/register",
-    {
-      preHandler: [auth(["admin"])],
-      schema: {
-        tags: ["Employer"],
-      },
+  fastify.post("/register", {
+    preHandler: [auth(["admin"])],
+    schema: {
+      tags: ["Employer"],
     },
-    registerEmployer
-  );
+    handler: registerEmployer,
+  });
 
-  fastify.post(
-    "/login",
-    {
-      schema: {
-        tags: ["Employer"],
-      },
+  fastify.post("/login", {
+    schema: {
+      tags: ["Employer"],
     },
-    loginEmployer
-  );
+    handler: loginEmployer,
+  });
 
-  fastify.get(
-    "/",
-    {
-      preHandler: [auth(["admin"])],
-      schema: {
-        tags: ["Employer"],
-      },
+  fastify.get("/", {
+    preHandler: [auth(["admin"])],
+    schema: {
+      tags: ["Employer"],
     },
-    getAllEmployers
-  );
+    handler: getAllEmployers,
+  });
 
-  fastify.get(
-    "/:id",
-    {
-      preHandler: [auth(["admin", "employer"])],
-      schema: {
-        tags: ["Employer"],
-      },
+  fastify.get("/:id", {
+    preHandler: [auth(["admin", "employer"])],
+    schema: {
+      tags: ["Employer"],
     },
-    getEmployer
-  );
+    handler: getEmployer,
+  });
 
-  fastify.delete(
-    "/:id",
-    {
-      preHandler: [auth(["admin"])],
-      schema: {
-        tags: ["Employer"],
-      },
+  fastify.delete("/:id", {
+    preHandler: [auth(["admin"])],
+    schema: {
+      tags: ["Employer"],
     },
-    deleteEmployer
-  );
+    handler: deleteEmployer,
+  });
 
-  fastify.put(
-    "/:id",
-    {
-      preHandler: [auth(["admin", "employer"])],
-      schema: {
-        tags: ["Employer"],
-      },
+  fastify.put("/:id", {
+    preHandler: [auth(["admin", "employer"])],
+    schema: {
+      tags: ["Employer"],
     },
-    editEmployer
-  );
+    handler: editEmployer,
+  });
 
   done();
 }

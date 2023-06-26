@@ -7,38 +7,29 @@ const {
 const auth = require("../middlewares/auth");
 
 function employeeRoutes(fastify, options, done) {
-  fastify.post(
-    "/register",
-    {
-      preHandler: [auth(["admin", "employer"])],
+  fastify.post("/register", {
+    preHandler: [auth(["admin", "employer"])],
 
-      schema: {
-        tags: ["Employee"],
-      },
+    schema: {
+      tags: ["Employee"],
     },
-    registerEmployee
-  );
+    handler: registerEmployee,
+  });
 
-  fastify.post(
-    "/login",
-    {
-      schema: {
-        tags: ["Employee"],
-      },
+  fastify.post("/login", {
+    schema: {
+      tags: ["Employee"],
     },
-    loginEmployee
-  );
+    handler: loginEmployee,
+  });
 
-  fastify.get(
-    "/",
-    {
-      preHandler: [auth(["admin", "employer"])],
-      schema: {
-        tags: ["Employee"],
-      },
+  fastify.get("/", {
+    preHandler: [auth(["admin", "employer"])],
+    schema: {
+      tags: ["Employee"],
     },
-    getAllEmployees
-  );
+    handler: getAllEmployees,
+  });
 
   // fastify.get(
   //   "/:id",

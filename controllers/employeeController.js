@@ -120,7 +120,7 @@ const loginEmployee = async (req, res) => {
 
 //* GET => All employers
 const getAllEmployees = async (req, res) => {
-  const employerId = req.employerId || req.headers.w;
+  const employerId = req.employerId || req.headers.employer_id;
 
   if (!employerId) {
     return res.status(400).send({
