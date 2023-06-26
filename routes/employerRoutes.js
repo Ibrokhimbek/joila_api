@@ -10,6 +10,7 @@ const {
 const auth = require("../middlewares/auth");
 
 function employerRoutes(fastify, options, done) {
+  //* Register employer
   fastify.post("/register", {
     preHandler: [auth(["admin"])],
     schema: {
@@ -18,6 +19,7 @@ function employerRoutes(fastify, options, done) {
     handler: registerEmployer,
   });
 
+  //* Login employer
   fastify.post("/login", {
     schema: {
       tags: ["Employer"],
@@ -25,6 +27,7 @@ function employerRoutes(fastify, options, done) {
     handler: loginEmployer,
   });
 
+  //* Get all employers
   fastify.get("/", {
     preHandler: [auth(["admin"])],
     schema: {
@@ -33,6 +36,7 @@ function employerRoutes(fastify, options, done) {
     handler: getAllEmployers,
   });
 
+  //* Get one employer
   fastify.get("/:id", {
     preHandler: [auth(["admin", "employer"])],
     schema: {
@@ -41,6 +45,7 @@ function employerRoutes(fastify, options, done) {
     handler: getEmployer,
   });
 
+  //* Delete an employer
   fastify.delete("/:id", {
     preHandler: [auth(["admin"])],
     schema: {
@@ -49,6 +54,7 @@ function employerRoutes(fastify, options, done) {
     handler: deleteEmployer,
   });
 
+  //* Update employer's fullname vs phone number
   fastify.put("/:id", {
     preHandler: [auth(["admin", "employer"])],
     schema: {

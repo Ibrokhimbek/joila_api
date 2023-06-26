@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Employer = require("../models/Employer");
 
-//* POST => register Employer
+//* POST => Register employer
 const registerEmployer = async (req, res) => {
   const { fullname, phone_number, password } = req.body;
 
@@ -56,7 +56,7 @@ const registerEmployer = async (req, res) => {
   });
 };
 
-//* POST => login
+//* POST => Login employer
 const loginEmployer = async (req, res) => {
   const { phone_number, password } = req.body;
 
@@ -111,7 +111,7 @@ const loginEmployer = async (req, res) => {
   }
 };
 
-//* GET => All employers
+//* GET => Get all employers
 const getAllEmployers = async (req, res) => {
   try {
     const employers = await Employer.find().exec();
@@ -152,7 +152,7 @@ const getEmployer = async (req, res) => {
   }
 };
 
-//* DELETE => Delete employer
+//* DELETE => Delete an employer
 const deleteEmployer = async (req, res) => {
   const id = req.params.id;
 
@@ -177,7 +177,7 @@ const deleteEmployer = async (req, res) => {
   }
 };
 
-//* PUT => Edit employer
+//* PUT => Update employer's fullname vs phone number
 const editEmployer = async (req, res) => {
   const id = req.params.id;
 

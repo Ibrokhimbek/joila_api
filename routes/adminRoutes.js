@@ -2,6 +2,7 @@ const { registerAdmin, loginAdmin } = require("../controllers/adminController");
 const auth = require("../middlewares/auth");
 
 function adminRoutes(fastify, options, done) {
+  //* Register admin
   fastify.post("/register", {
     schema: {
       tags: ["Admin"],
@@ -9,6 +10,7 @@ function adminRoutes(fastify, options, done) {
     handler: registerAdmin,
   });
 
+  //* Login admin
   fastify.post("/login", {
     schema: {
       tags: ["Admin"],

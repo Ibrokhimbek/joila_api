@@ -2,7 +2,7 @@ const Employee = require("../models/Employee");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-//* POST => register Employee
+//* POST => Register employee
 const registerEmployee = async (req, res) => {
   const { fullname, phone_number, password } = req.body;
 
@@ -63,7 +63,7 @@ const registerEmployee = async (req, res) => {
   }
 };
 
-//* POST => login
+//* POST => Login employee
 const loginEmployee = async (req, res) => {
   const { phone_number, password } = req.body;
 
@@ -118,7 +118,7 @@ const loginEmployee = async (req, res) => {
   }
 };
 
-//* GET => All employers
+//* GET => Get all employees
 const getAllEmployees = async (req, res) => {
   const employerId = req.employerId || req.headers.employer_id;
 

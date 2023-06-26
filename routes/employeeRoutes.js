@@ -7,6 +7,7 @@ const {
 const auth = require("../middlewares/auth");
 
 function employeeRoutes(fastify, options, done) {
+  //* Register employee
   fastify.post("/register", {
     preHandler: [auth(["admin", "employer"])],
 
@@ -16,6 +17,7 @@ function employeeRoutes(fastify, options, done) {
     handler: registerEmployee,
   });
 
+  //* Login employee
   fastify.post("/login", {
     schema: {
       tags: ["Employee"],
@@ -23,6 +25,7 @@ function employeeRoutes(fastify, options, done) {
     handler: loginEmployee,
   });
 
+  //* Get all employees
   fastify.get("/", {
     preHandler: [auth(["admin", "employer"])],
     schema: {

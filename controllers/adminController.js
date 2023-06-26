@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const Admin = require("../models/Admin");
 const Employer = require("../models/Employer");
 
-//* POST => register
+//* POST => Register admin
 const registerAdmin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -63,7 +63,7 @@ const registerAdmin = async (req, res) => {
   });
 };
 
-//* POST => login
+//* POST => Login admin
 const loginAdmin = async (req, res) => {
   const { email, password } = req.body;
 
