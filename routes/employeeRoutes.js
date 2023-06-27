@@ -151,6 +151,26 @@ function employeeRoutes(fastify, options, done) {
           id: { type: "string" },
         },
       },
+      response: {
+        200: {
+          description: "Successful response",
+          type: "object",
+          properties: {
+            message: { type: "string" },
+            employee: {
+              type: "object",
+              properties: {
+                _id: { type: "string" },
+                fullname: { type: "string" },
+                phone_number: { type: "string" },
+                employer_id: { type: "string" },
+                balance: { type: "number" },
+                debt: { type: "number" },
+              },
+            },
+          },
+        },
+      },
     },
     handler: editEmployee,
   });
