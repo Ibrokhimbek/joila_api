@@ -147,8 +147,33 @@ const getAllEmployees = async (req, res) => {
   }
 };
 
+//* GET => Get one employee
+const getEmployee = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const employee = await Employee.findOne({ _id: id }).exec();
+
+    if (!employee) {
+      return res.status(400).send({
+        message: "Employee was not found",
+      });
+    } else {
+      return res.status(200).send({
+        message: "Employee was found",
+        employee,
+      });
+    }
+  } catch (error) {
+    return res.status(500).send({
+      error: "Wrong id pattern",
+      description: error,
+    });
+  }
+};
 module.exports = {
   registerEmployee,
   loginEmployee,
   getAllEmployees,
+  getEmployee,
 };
