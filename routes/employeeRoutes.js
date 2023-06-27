@@ -4,6 +4,7 @@ const {
   getAllEmployees,
   getEmployee,
   deleteEmployee,
+  editEmployee,
 } = require("../controllers/employeeController");
 
 const auth = require("../middlewares/auth");
@@ -132,11 +133,27 @@ function employeeRoutes(fastify, options, done) {
     handler: deleteEmployee,
   });
 
-  // fastify.put(
-  //   "/:id",
-  //   { preHandler: [auth(["admin", "employer"])] },
-  //   editEmployee
-  // );
+  fastify.put("/:id", {
+    preHandler: [auth(["admin", "employer"])],
+    schema: {
+      tags: ["Employee"],
+      body: {
+        type: "object",
+        properties: {
+          fullname: { type: "string" },
+          phone_number: { type: "string" },
+        },
+      },
+      params: {
+        type: "object",
+        required: ["id"],
+        properties: {
+          id: { type: "string" },
+        },
+      },
+    },
+    handler: editEmployee,
+  });
 
   done();
 }

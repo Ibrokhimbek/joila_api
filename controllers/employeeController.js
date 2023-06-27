@@ -197,10 +197,46 @@ const deleteEmployee = async (req, res) => {
   }
 };
 
+//* PUT => Update employes's fullname vs phone number
+const editEmployee = async (req, res) => {
+  const id = req.params.id;
+  delete req.body.password;
+  delete req.body.balance;
+  delete req.body.debt;
+
+  try {
+    const employee = await Employee.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          ...req.body,
+        },
+      }
+    );
+
+    if (!employee) {
+      return res.status(400).send({
+        message: "Employee was not found",
+      });
+    } else {
+      return res.status(200).send({
+        message: "Employee successfully updated",
+        employee,
+      });
+    }
+  } catch (err) {
+    return res.status(400).send({
+      error: "Error while updating an employee",
+      description: err,
+    });
+  }
+};
+
 module.exports = {
   registerEmployee,
   loginEmployee,
   getAllEmployees,
   getEmployee,
   deleteEmployee,
+  editEmployee,
 };

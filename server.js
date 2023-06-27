@@ -9,8 +9,8 @@ fastify.register(require("@fastify/swagger"), {
   routePrefix: "/docs",
   swagger: {
     info: {
-      title: "fastify-api",
-      description: "Your API description",
+      title: "Joila API",
+      description: "This is a Joila CRM platform's API list!",
       version: "1.0.0",
     },
     tags: [

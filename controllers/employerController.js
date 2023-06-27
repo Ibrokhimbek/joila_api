@@ -203,7 +203,7 @@ const editEmployer = async (req, res) => {
       });
     }
   } catch (err) {
-    return res.send({
+    return res.status(400).send({
       error: "Error while updating an employer",
       description: err,
     });
