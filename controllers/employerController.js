@@ -170,7 +170,7 @@ const deleteEmployer = async (req, res) => {
       });
     }
   } catch (err) {
-    return res.send({
+    return res.status(400).send({
       error: "Error while deleting an employer",
       description: err,
     });

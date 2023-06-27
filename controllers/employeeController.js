@@ -171,9 +171,36 @@ const getEmployee = async (req, res) => {
     });
   }
 };
+
+//* DELETE => delete an employee
+const deleteEmployee = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const employee = await Employee.findOneAndDelete({ _id: id });
+
+    if (!employee) {
+      return res.status(400).send({
+        message: "Employee was not found",
+      });
+    } else {
+      return res.status(200).send({
+        message: "Employee successfully deleted",
+        employee,
+      });
+    }
+  } catch (err) {
+    return res.status(400).send({
+      error: "Error while deleting an employee",
+      description: err,
+    });
+  }
+};
+
 module.exports = {
   registerEmployee,
   loginEmployee,
   getAllEmployees,
   getEmployee,
+  deleteEmployee,
 };
