@@ -17,15 +17,6 @@ const productSchema = new Schema(
       required: true,
       min: 0,
     },
-    image: {
-      type: String,
-      validate: {
-        validator: function (value) {
-          return /\.(png|jpe?g)$/i.test(value);
-        },
-        message: "Invalid image file format",
-      },
-    },
     price: {
       type: Number,
       required: true,
@@ -34,6 +25,12 @@ const productSchema = new Schema(
     unit: {
       type: String,
       enum: ["kg", "dona", "qadoq", "m2"],
+      required: true,
+    },
+    employerId: {
+      type: String,
+      required: true,
+      length: 24,
     },
   },
   {

@@ -1,9 +1,10 @@
 const dotenv = require("dotenv");
 dotenv.config();
 const fastify = require("fastify")();
-const cors = require("fastify-cors");
+const cors = require("@fastify/cors");
+const multipart = require("@fastify/multipart");
 fastify.register(cors);
-
+fastify.register(multipart);
 fastify.register(require("@fastify/swagger"), {
   exposeRoute: true,
   routePrefix: "/docs",
@@ -18,6 +19,7 @@ fastify.register(require("@fastify/swagger"), {
       { name: "Admin", description: "Super Admin related end-points" },
       { name: "Employer", description: "Employer related end-points" },
       { name: "Employee", description: "Employee related end-points" },
+      { name: "Product", description: "Product related end-points" },
     ],
   },
 });
@@ -35,6 +37,9 @@ fastify.register(require("./routes/employerRoutes"), {
 });
 fastify.register(require("./routes/employeeRoutes"), {
   prefix: "/api/v1/employee",
+});
+fastify.register(require("./routes/productRotues"), {
+  prefix: "/api/v1/product",
 });
 
 //? Database setup

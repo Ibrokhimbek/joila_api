@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const Admin = require("../models/Admin");
 const Employer = require("../models/Employer");
+const Employee = require("../models/Employee");
 
 const auth = (permissions) => {
   return (req, res, done) => {
@@ -52,6 +53,20 @@ const auth = (permissions) => {
           return;
         }
 
+        if (role === "employee" && permissions.includes(role)) {
+          const { phone_number } = decoded;
+
+          const employee = await Employee.findOne({ phone_number }).exec();
+
+          if (!employee) {
+            return res.code(401).send({ error: "Unauthorized Employee" });
+          }
+
+          req.employeeId = employee._id;
+          req.employerId = employee.employer_id;
+          done();
+          return;
+        }
         return res
           .status(401)
           .send({ message: "This user is not permitted to get data!" });
