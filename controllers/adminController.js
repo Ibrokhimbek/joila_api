@@ -4,7 +4,7 @@ const Admin = require("../models/Admin");
 const Employer = require("../models/Employer");
 
 //* POST => Register admin
-const registerAdmin = async (req, res) => {
+exports.registerAdmin = async (req, res) => {
   const { email, password } = req.body;
 
   // Validate email format
@@ -64,7 +64,7 @@ const registerAdmin = async (req, res) => {
 };
 
 //* POST => Login admin
-const loginAdmin = async (req, res) => {
+exports.loginAdmin = async (req, res) => {
   const { email, password } = req.body;
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -116,9 +116,4 @@ const loginAdmin = async (req, res) => {
       err,
     });
   }
-};
-
-module.exports = {
-  registerAdmin,
-  loginAdmin,
 };

@@ -1,27 +1,26 @@
 const {
-  addProduct,
-  allProducts,
-  editProduct,
-  deleteProduct,
-  getProduct,
-} = require("../controllers/productController");
+  addMarket,
+  allMarkets,
+  editMarket,
+  deleteMarket,
+  getMarket,
+} = require("../controllers/marketController");
 const auth = require("../middlewares/auth");
 
-//* Add product options
-const addProductOpts = {
-  tags: ["Product"],
+//* Add market options
+const addMarketOpts = {
+  tags: ["Market"],
   body: {
     type: "object",
     properties: {
-      code: { type: "string" },
-      name: { type: "string" },
-      qty: { type: "number" },
-      price: { type: "number" },
-      unit: { type: "string" },
+      market_name: { type: "string" },
+      phone_number: { type: "string" },
+      location: { type: "string" },
     },
   },
   headers: {
     type: "object",
+    required: ["authorization"],
     properties: {
       authorization: {
         type: "string",
@@ -30,19 +29,17 @@ const addProductOpts = {
     },
   },
   response: {
-    201: {
-      description: "Successfull response",
+    200: {
+      type: "object",
       properties: {
         message: { type: "string" },
-        product: {
+        market: {
           type: "object",
           properties: {
             _id: { type: "string" },
-            code: { type: "string" },
-            name: { type: "string" },
-            qty: { type: "number" },
-            price: { type: "number" },
-            unit: { type: "string" },
+            market_name: { type: "string" },
+            phone_number: { type: "string" },
+            location: { type: "string" },
           },
         },
       },
@@ -50,9 +47,9 @@ const addProductOpts = {
   },
 };
 
-//* Product pagination options
-const getProdPaginationOpts = {
-  tags: ["Product"],
+//* Market pagination options
+const marketPaginationOpts = {
+  tags: ["Market"],
   query: {
     type: "object",
     properties: {
@@ -62,6 +59,7 @@ const getProdPaginationOpts = {
   },
   headers: {
     type: "object",
+    required: ["authorization"],
     properties: {
       authorization: {
         type: "string",
@@ -84,11 +82,9 @@ const getProdPaginationOpts = {
             type: "object",
             properties: {
               _id: { type: "string" },
-              code: { type: "string" },
-              name: { type: "string" },
-              qty: { type: "number" },
-              price: { type: "number" },
-              unit: { type: "string" },
+              market_name: { type: "string" },
+              phone_number: { type: "string" },
+              location: { type: "string" },
             },
           },
         },
@@ -97,11 +93,12 @@ const getProdPaginationOpts = {
   },
 };
 
-//* Get one product options
-const getProductOpts = {
-  tags: ["Product"],
+//* Get one market options
+const getMarketOpts = {
+  tags: ["Market"],
   headers: {
     type: "object",
+    required: ["authorization"],
     properties: {
       authorization: {
         type: "string",
@@ -117,7 +114,7 @@ const getProductOpts = {
     },
   },
   response: {
-    201: {
+    200: {
       description: "Successfull response",
       properties: {
         message: { type: "string" },
@@ -125,11 +122,9 @@ const getProductOpts = {
           type: "object",
           properties: {
             _id: { type: "string" },
-            code: { type: "string" },
-            name: { type: "string" },
-            qty: { type: "number" },
-            price: { type: "number" },
-            unit: { type: "string" },
+            market_name: { type: "string" },
+            phone_number: { type: "string" },
+            location: { type: "string" },
           },
         },
       },
@@ -137,11 +132,12 @@ const getProductOpts = {
   },
 };
 
-//* Update product options
-const updateProdOpts = {
-  tags: ["Product"],
+//* Update market options
+const updateMarketOpts = {
+  tags: ["Market"],
   headers: {
     type: "object",
+    required: ["authorization"],
     properties: {
       authorization: {
         type: "string",
@@ -159,11 +155,10 @@ const updateProdOpts = {
   body: {
     type: "object",
     properties: {
-      code: { type: "string" },
-      name: { type: "string" },
-      qty: { type: "number" },
-      price: { type: "number" },
-      unit: { type: "string" },
+      _id: { type: "string" },
+      market_name: { type: "string" },
+      phone_number: { type: "string" },
+      location: { type: "string" },
     },
   },
   response: {
@@ -175,11 +170,9 @@ const updateProdOpts = {
           type: "object",
           properties: {
             _id: { type: "string" },
-            code: { type: "string" },
-            name: { type: "string" },
-            qty: { type: "number" },
-            price: { type: "number" },
-            unit: { type: "string" },
+            market_name: { type: "string" },
+            phone_number: { type: "string" },
+            location: { type: "string" },
           },
         },
       },
@@ -187,11 +180,12 @@ const updateProdOpts = {
   },
 };
 
-//* Delete product options
-const deleteProdOpts = {
-  tags: ["Product"],
+//* Delete market options
+const deleteMarketOpts = {
+  tags: ["Market"],
   headers: {
     type: "object",
+    required: ["authorization"],
     properties: {
       authorization: {
         type: "string",
@@ -215,11 +209,9 @@ const deleteProdOpts = {
           type: "object",
           properties: {
             _id: { type: "string" },
-            code: { type: "string" },
-            name: { type: "string" },
-            qty: { type: "number" },
-            price: { type: "number" },
-            unit: { type: "string" },
+            market_name: { type: "string" },
+            phone_number: { type: "string" },
+            location: { type: "string" },
           },
         },
       },
@@ -227,43 +219,43 @@ const deleteProdOpts = {
   },
 };
 
-const productRoutes = (fastify, options, done) => {
-  //* Add product
+const marketRoutes = (fastify, options, done) => {
+  //* Add market
   fastify.post("", {
-    preHandler: [auth(["employer", "employee"])],
-    schema: addProductOpts,
-    handler: addProduct,
+    preHandler: [auth(["employer"])],
+    schema: addMarketOpts,
+    handler: addMarket,
   });
 
-  //* Product pagination
+  //* Market pagination
   fastify.get("/pagination", {
-    preHandler: [auth(["employer", "employee"])],
-    schema: getProdPaginationOpts,
-    handler: allProducts,
+    preHandler: [auth(["employer"])],
+    schema: marketPaginationOpts,
+    handler: allMarkets,
   });
 
-  //* Get one product
+  //* Get one market
   fastify.get("/:id", {
-    preHandler: [auth(["employer", "employee"])],
-    schema: getProductOpts,
-    handler: getProduct,
+    preHandler: [auth(["employer"])],
+    schema: getMarketOpts,
+    handler: getMarket,
   });
 
-  //* Update product
+  //* Update market
   fastify.put("/:id", {
-    preHandler: [auth(["employer", "employee"])],
-    schema: updateProdOpts,
-    handler: editProduct,
+    preHandler: [auth(["employer"])],
+    schema: updateMarketOpts,
+    handler: editMarket,
   });
 
-  //* Delete product
+  //* Delete market
   fastify.delete("/:id", {
-    preHandler: [auth(["employer", "employee"])],
-    schema: deleteProdOpts,
-    handler: deleteProduct,
+    preHandler: [auth(["employer"])],
+    schema: deleteMarketOpts,
+    handler: deleteMarket,
   });
 
   done();
 };
 
-module.exports = productRoutes;
+module.exports = marketRoutes;

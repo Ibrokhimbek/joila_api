@@ -1,5 +1,6 @@
 const Product = require("../models/Product");
 
+//* POST => Add product
 exports.addProduct = async (req, res) => {
   const { code, name, qty, price, unit } = req.body;
 
@@ -27,6 +28,7 @@ exports.addProduct = async (req, res) => {
   }
 };
 
+//* GET => Product pagination
 exports.allProducts = async (req, res) => {
   try {
     const { page = 1, pageSize = 10 } = req.query;
@@ -51,6 +53,7 @@ exports.allProducts = async (req, res) => {
   }
 };
 
+//* GET => Get one product
 exports.getProduct = async (req, res) => {
   const id = req.params.id;
 
@@ -75,6 +78,7 @@ exports.getProduct = async (req, res) => {
   }
 };
 
+//* PUT => Update product
 exports.editProduct = async (req, res) => {
   const prodId = req.params.id;
 
@@ -105,6 +109,7 @@ exports.editProduct = async (req, res) => {
   }
 };
 
+//* DELETE => Delete product
 exports.deleteProduct = async (req, res) => {
   const id = req.params.id;
 

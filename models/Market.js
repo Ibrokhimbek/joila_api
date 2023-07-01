@@ -13,7 +13,10 @@ const MarketSchema = new Schema({
   },
   location: {
     type: String,
-    required: false,
+  },
+  employerId: {
+    type: String,
+    required: true,
   },
 });
 

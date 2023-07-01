@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 //* POST => Register employee
-const registerEmployee = async (req, res) => {
+exports.registerEmployee = async (req, res) => {
   const { fullname, phone_number, password } = req.body;
 
   // Validate phone number format
@@ -64,7 +64,7 @@ const registerEmployee = async (req, res) => {
 };
 
 //* POST => Login employee
-const loginEmployee = async (req, res) => {
+exports.loginEmployee = async (req, res) => {
   const { phone_number, password } = req.body;
 
   const phoneNumberRegEx = /^(\+998)-\d{2}-\d{3}-\d{2}-\d{2}$/;
@@ -119,7 +119,7 @@ const loginEmployee = async (req, res) => {
 };
 
 //* GET => Get all employees
-const getAllEmployees = async (req, res) => {
+exports.getAllEmployees = async (req, res) => {
   const employerId = req.employerId || req.headers.employer_id;
 
   if (!employerId) {
@@ -148,7 +148,7 @@ const getAllEmployees = async (req, res) => {
 };
 
 //* GET => Get one employee
-const getEmployee = async (req, res) => {
+exports.getEmployee = async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -173,7 +173,7 @@ const getEmployee = async (req, res) => {
 };
 
 //* DELETE => delete an employee
-const deleteEmployee = async (req, res) => {
+exports.deleteEmployee = async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -198,7 +198,7 @@ const deleteEmployee = async (req, res) => {
 };
 
 //* PUT => Update employes's fullname vs phone number
-const editEmployee = async (req, res) => {
+exports.editEmployee = async (req, res) => {
   const id = req.params.id;
   delete req.body.password;
   delete req.body.balance;
@@ -230,13 +230,4 @@ const editEmployee = async (req, res) => {
       description: err,
     });
   }
-};
-
-module.exports = {
-  registerEmployee,
-  loginEmployee,
-  getAllEmployees,
-  getEmployee,
-  deleteEmployee,
-  editEmployee,
 };

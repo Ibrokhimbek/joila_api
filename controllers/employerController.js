@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const Employer = require("../models/Employer");
 
 //* POST => Register employer
-const registerEmployer = async (req, res) => {
+exports.registerEmployer = async (req, res) => {
   const { fullname, phone_number, password } = req.body;
 
   // Validate phone number format
@@ -57,7 +57,7 @@ const registerEmployer = async (req, res) => {
 };
 
 //* POST => Login employer
-const loginEmployer = async (req, res) => {
+exports.loginEmployer = async (req, res) => {
   const { phone_number, password } = req.body;
 
   const phoneNumberRegEx = /^(\+998)-\d{2}-\d{3}-\d{2}-\d{2}$/;
@@ -112,7 +112,7 @@ const loginEmployer = async (req, res) => {
 };
 
 //* GET => Get all employers
-const getAllEmployers = async (req, res) => {
+exports.getAllEmployers = async (req, res) => {
   try {
     const employers = await Employer.find().exec();
 
@@ -129,7 +129,7 @@ const getAllEmployers = async (req, res) => {
 };
 
 //* GET => Get one employer
-const getEmployer = async (req, res) => {
+exports.getEmployer = async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -153,7 +153,7 @@ const getEmployer = async (req, res) => {
 };
 
 //* DELETE => Delete an employer
-const deleteEmployer = async (req, res) => {
+exports.deleteEmployer = async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -178,7 +178,7 @@ const deleteEmployer = async (req, res) => {
 };
 
 //* PUT => Update employer's fullname vs phone number
-const editEmployer = async (req, res) => {
+exports.editEmployer = async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -208,13 +208,4 @@ const editEmployer = async (req, res) => {
       description: err,
     });
   }
-};
-
-module.exports = {
-  registerEmployer,
-  loginEmployer,
-  getAllEmployers,
-  getEmployer,
-  deleteEmployer,
-  editEmployer,
 };

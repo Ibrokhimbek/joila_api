@@ -20,6 +20,8 @@ fastify.register(require("@fastify/swagger"), {
       { name: "Employer", description: "Employer related end-points" },
       { name: "Employee", description: "Employee related end-points" },
       { name: "Product", description: "Product related end-points" },
+      { name: "Market", description: "Market related end-points" },
+      { name: "Order", description: "Order related end-points" },
     ],
   },
 });
@@ -41,21 +43,24 @@ fastify.register(require("./routes/employeeRoutes"), {
 fastify.register(require("./routes/productRotues"), {
   prefix: "/api/v1/product",
 });
+fastify.register(require("./routes/marketRoutes"), {
+  prefix: "/api/v1/market",
+});
 
 //? Database setup
-// mongoose
-//   .connect("mongodb://127.0.0.1:27017/iDev", {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => console.log("Local db connected"))
-//   .catch((err) => console.error("MongoDB connection error:", err));
+mongoose
+  .connect("mongodb://127.0.0.1:27017/iDev", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Local db connected"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 //* Database connection
-mongoose.set("strictQuery", true);
-mongoose.connect(process.env.DB_CONNECTION).then(() => {
-  console.log("Global db connected");
-});
+// mongoose.set("strictQuery", true);
+// mongoose.connect(process.env.DB_CONNECTION).then(() => {
+//   console.log("Global db connected");
+// });
 
 fastify.addHook("onClose", async () => {
   await mongoose.connection.close();
