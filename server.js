@@ -46,6 +46,9 @@ fastify.register(require("./routes/productRotues"), {
 fastify.register(require("./routes/marketRoutes"), {
   prefix: "/api/v1/market",
 });
+fastify.register(require("./routes/orderRoutes"), {
+  prefix: "/api/v1/order",
+});
 
 //? Database setup
 mongoose

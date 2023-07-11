@@ -14,6 +14,11 @@ const MarketSchema = new Schema({
   location: {
     type: String,
   },
+  balance: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
   employerId: {
     type: String,
     required: true,

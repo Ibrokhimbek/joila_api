@@ -3,9 +3,18 @@ const { Schema } = mongoose;
 
 const OrderSchema = new Schema(
   {
-    market_id: {
+    client_type: {
       type: String,
+      required: true,
+      enum: ["Market", "Client"],
+    },
+    market_id: {
+      type: Schema.Types.ObjectId,
       default: null,
+    },
+    client_name: {
+      type: String,
+      default: "Bir martalik savdo",
     },
     employee_id: {
       type: Schema.Types.ObjectId,

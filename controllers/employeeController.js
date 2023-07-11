@@ -200,17 +200,28 @@ exports.deleteEmployee = async (req, res) => {
 //* PUT => Update employes's fullname vs phone number
 exports.editEmployee = async (req, res) => {
   const id = req.params.id;
-  delete req.body.password;
-  delete req.body.balance;
-  delete req.body.debt;
+
+  let hashedPassword = null;
+
+  const editOpts = {
+    fullname: req.body.fullname,
+    phone_number: req.body.phone_number,
+  };
+
+  if (req.body.password.length >= 8) {
+    hashedPassword = await bcrypt.hash(password, 10);
+    editOpts.password = hashedPassword;
+  } else {
+    return res.status(400).send({
+      message: "Password length must be greater than or equal to 8",
+    });
+  }
 
   try {
     const employee = await Employee.findOneAndUpdate(
       { _id: id },
       {
-        $set: {
-          ...req.body,
-        },
+        $set: editOpts,
       }
     );
 

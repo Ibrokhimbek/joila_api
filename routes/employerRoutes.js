@@ -11,7 +11,7 @@ const auth = require("../middlewares/auth");
 
 function employerRoutes(fastify, options, done) {
   //* Register employer
-  fastify.post("/register", {
+  fastify.post("", {
     preHandler: [auth(["admin"])],
     schema: {
       tags: ["Employer"],
