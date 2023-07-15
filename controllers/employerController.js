@@ -142,7 +142,7 @@ exports.getEmployer = async (req, res) => {
     } else {
       return res.status(200).send({
         message: "Employer was found",
-        employer,
+        data: employer,
       });
     }
   } catch (err) {

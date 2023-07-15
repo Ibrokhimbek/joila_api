@@ -44,7 +44,7 @@ exports.allProducts = async (req, res) => {
       page,
       count: products.length,
       page_size: pageSize,
-      results: products,
+      data: products,
     };
 
     res.status(200).send(response);
@@ -67,7 +67,7 @@ exports.getProduct = async (req, res) => {
     } else {
       return res.status(200).send({
         message: "Product was found",
-        product,
+        data: product,
       });
     }
   } catch (error) {

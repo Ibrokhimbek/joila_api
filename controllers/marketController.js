@@ -42,7 +42,7 @@ exports.allMarkets = async (req, res) => {
       page,
       count: markets.length,
       page_size: pageSize,
-      results: markets,
+      data: markets,
     };
 
     res.status(200).send(response);
@@ -65,7 +65,7 @@ exports.getMarket = async (req, res) => {
     } else {
       return res.status(200).send({
         message: "Market was found",
-        market,
+        data: market,
       });
     }
   } catch (error) {

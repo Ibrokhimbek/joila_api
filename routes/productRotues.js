@@ -78,7 +78,7 @@ const getProdPaginationOpts = {
         page: { type: "number" },
         count: { type: "number" },
         page_size: { type: "number" },
-        results: {
+        data: {
           type: "array",
           items: {
             type: "object",
@@ -121,7 +121,7 @@ const getProductOpts = {
       description: "Successfull response",
       properties: {
         message: { type: "string" },
-        product: {
+        data: {
           type: "object",
           properties: {
             _id: { type: "string" },

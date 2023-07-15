@@ -161,7 +161,7 @@ exports.getEmployee = async (req, res) => {
     } else {
       return res.status(200).send({
         message: "Employee was found",
-        employee,
+        data: employee,
       });
     }
   } catch (error) {

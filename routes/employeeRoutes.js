@@ -67,7 +67,7 @@ function employeeRoutes(fastify, options, done) {
           type: "object",
           properties: {
             message: { type: "string" },
-            employee: {
+            data: {
               type: "object",
               properties: {
                 _id: { type: "string" },
