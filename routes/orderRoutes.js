@@ -1,4 +1,8 @@
-const { addOrder } = require("../controllers/orderController");
+const {
+  addOrder,
+  getEmployeeOrders,
+  getMarketOrders,
+} = require("../controllers/orderController");
 const auth = require("../middlewares/auth");
 
 const orderRoutes = (fastify, options, done) => {
@@ -11,12 +15,23 @@ const orderRoutes = (fastify, options, done) => {
     handler: addOrder,
   });
 
-  //* Order pagination
-  // fastify.get("/pagination", {
-  //   preHandler: [auth(["employer"])],
-  //   // schema: orderPaginationOpts,
-  //   handler: allOrders,
-  // });
+  //* Order pagination by employee id
+  fastify.get("/employee/pagination", {
+    preHandler: [auth(["employee"])],
+    schema: {
+      tags: ["Order"],
+    },
+    handler: getEmployeeOrders,
+  });
+
+  //* Order pagination by employee id
+  fastify.get("/market/pagination", {
+    preHandler: [auth(["employee"])],
+    schema: {
+      tags: ["Order"],
+    },
+    handler: getMarketOrders,
+  });
 
   //* Get one order
   // fastify.get("/:id", {

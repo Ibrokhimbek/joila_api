@@ -57,3 +57,68 @@ exports.addOrder = async (req, res) => {
     });
   }
 };
+
+//* GET => Pagination orders by employee id
+exports.getEmployeeOrders = async (req, res) => {
+  try {
+    const { page = 1, pageSize = 10, employeeId } = req.query;
+    const skip = (page - 1) * pageSize;
+
+    if (!req.employeeId && !employeeId) {
+      res.status(400).send({
+        message: "Employee Id is required",
+      });
+    }
+
+    const qtyOrders = await Order.find({
+      employee_id: req.employeeId || employeeId,
+    });
+    const orders = await Order.find({
+      employee_id: req.employeeId || employeeId,
+    })
+      .skip(skip)
+      .limit(pageSize);
+
+    const response = {
+      qtyOrders: qtyOrders.length,
+      page,
+      count: orders.length,
+      page_size: pageSize,
+      data: orders,
+    };
+
+    res.status(200).send(response);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ error });
+  }
+};
+
+//* GET => Pagination orders by market id
+exports.getMarketOrders = async (req, res) => {
+  try {
+    const { page = 1, pageSize = 10, marketId } = req.query;
+    const skip = (page - 1) * pageSize;
+
+    const qtyOrders = await Order.find({
+      market_id: marketId,
+    });
+    const orders = await Order.find({
+      market_id: marketId,
+    })
+      .skip(skip)
+      .limit(pageSize);
+
+    const response = {
+      qtyOrders: qtyOrders.length,
+      page,
+      count: products.length,
+      page_size: pageSize,
+      data: orders,
+    };
+
+    res.status(200).send(response);
+  } catch (error) {
+    res.status(400).send({ error });
+  }
+};
