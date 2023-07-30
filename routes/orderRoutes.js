@@ -4,8 +4,10 @@ const auth = require("../middlewares/auth");
 const orderRoutes = (fastify, options, done) => {
   //* Add order
   fastify.post("", {
-    preHandler: [auth(["employer"])],
-    // schema: addOrderOpts,
+    preHandler: [auth(["employee"])],
+    schema: {
+      tags: ["Order"],
+    },
     handler: addOrder,
   });
 

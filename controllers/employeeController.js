@@ -197,7 +197,7 @@ exports.deleteEmployee = async (req, res) => {
   }
 };
 
-//* PUT => Update employes's fullname vs phone number
+//* PUT => Update employee's fullname vs phone number
 exports.editEmployee = async (req, res) => {
   const id = req.params.id;
 
@@ -211,10 +211,6 @@ exports.editEmployee = async (req, res) => {
   if (req.body.password.length >= 8) {
     hashedPassword = await bcrypt.hash(password, 10);
     editOpts.password = hashedPassword;
-  } else {
-    return res.status(400).send({
-      message: "Password length must be greater than or equal to 8",
-    });
   }
 
   try {

@@ -85,7 +85,7 @@ function employeeRoutes(fastify, options, done) {
     handler: getEmployee,
   });
 
-  //* delete an employee
+  //* Delete an employee
   fastify.delete("/:id", {
     preHandler: [auth(["admin", "employer"])],
     schema: {
@@ -133,6 +133,7 @@ function employeeRoutes(fastify, options, done) {
     handler: deleteEmployee,
   });
 
+  //* Edit an employee
   fastify.put("/:id", {
     preHandler: [auth(["admin", "employer"])],
     schema: {

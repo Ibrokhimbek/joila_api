@@ -14,7 +14,7 @@ const MarketSchema = new Schema({
   location: {
     type: String,
   },
-  balance: {
+  debt: {
     type: Number,
     default: 0,
     min: 0,
