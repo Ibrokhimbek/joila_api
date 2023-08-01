@@ -2,6 +2,7 @@ const {
   addOrder,
   getEmployeeOrders,
   getMarketOrders,
+  deleteOrder,
 } = require("../controllers/orderController");
 const auth = require("../middlewares/auth");
 
@@ -11,6 +12,91 @@ const orderRoutes = (fastify, options, done) => {
     preHandler: [auth(["employee"])],
     schema: {
       tags: ["Order"],
+      body: {
+        type: "object",
+        properties: {
+          client_type: {
+            type: "string",
+            enum: ["Market", "Client"],
+          },
+          market_id: {
+            type: "string",
+          },
+          client_name: {
+            type: "string",
+          },
+          products: {
+            type: "array",
+            items: {
+              type: "object",
+              required: ["productId", "qty", "price"],
+              properties: {
+                productId: {
+                  type: "string",
+                },
+                qty: {
+                  type: "number",
+                },
+                price: {
+                  type: "number",
+                },
+              },
+            },
+          },
+          paid: {
+            type: "number",
+          },
+        },
+      },
+      response: {
+        200: {
+          type: "object",
+          properties: {
+            message: {
+              type: "string",
+            },
+            order: {
+              type: "object",
+              properties: {
+                client_type: {
+                  type: "string",
+                  enum: ["Market", "Client"],
+                },
+                market_id: {
+                  type: "string",
+                },
+                client_name: {
+                  type: "string",
+                },
+                products: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    required: ["productId", "qty", "price"],
+                    properties: {
+                      productId: {
+                        type: "string",
+                      },
+                      qty: {
+                        type: "number",
+                      },
+                      price: {
+                        type: "number",
+                      },
+                    },
+                  },
+                },
+                paid: {
+                  type: "number",
+                },
+                totalAmount: {
+                  type: "number",
+                },
+              },
+            },
+          },
+        },
+      },
     },
     handler: addOrder,
   });
@@ -33,26 +119,14 @@ const orderRoutes = (fastify, options, done) => {
     handler: getMarketOrders,
   });
 
-  //* Get one order
-  // fastify.get("/:id", {
-  //   preHandler: [auth(["employer"])],
-  //   // schema: getOrderOpts,
-  //   handler: getOrder,
-  // });
-
-  //* Update order
-  // fastify.put("/:id", {
-  //   preHandler: [auth(["employer"])],
-  //   // schema: updateOrderOpts,
-  //   handler: editOrder,
-  // });
-
   //* Delete order
-  // fastify.delete("/:id", {
-  //   preHandler: [auth(["employer"])],
-  //   // schema: deleteOrderOpts,
-  //   handler: deleteOrder,
-  // });
+  fastify.delete("/:id", {
+    preHandler: [auth(["employer"])],
+    schema: {
+      tags: ["Order"],
+    },
+    handler: deleteOrder,
+  });
 
   done();
 };

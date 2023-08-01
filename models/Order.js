@@ -44,6 +44,11 @@ const OrderSchema = new Schema(
       required: true,
       min: 0,
     },
+    paid: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
   },
   {
     timestamps: true,

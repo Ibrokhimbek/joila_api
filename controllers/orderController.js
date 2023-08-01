@@ -1,10 +1,18 @@
 const Order = require("../models/Order");
 const Product = require("../models/Product");
+const Market = require("../models/Market");
+const Employee = require("../models/Employee");
 
 //* POST => Add order
 exports.addOrder = async (req, res) => {
   try {
-    const { client_type, client_name, market_id, products } = req.body;
+    const {
+      client_type,
+      client_name,
+      market_id,
+      products,
+      paid = 0,
+    } = req.body;
 
     if (products.length <= 0) {
       return res.status(400).send({
@@ -27,6 +35,7 @@ exports.addOrder = async (req, res) => {
     const orderObj = {
       client_type,
       products,
+      paid,
       employee_id: req.employeeId,
     };
 
@@ -40,6 +49,16 @@ exports.addOrder = async (req, res) => {
       const cartItem = products[i];
       totalAmount += totalAmount + cartItem.qty * cartItem.price;
     }
+    const debt = totalAmount - paid;
+
+    const market = await Market.findById(market_id).exec();
+    market.debt += debt;
+    await market.save();
+
+    const employee = await Employee.findById(req.employeeId).exec();
+    employee.balance += paid;
+    employee.debt += debt;
+    await employee.save();
 
     orderObj.totalAmount = totalAmount;
 
@@ -120,5 +139,40 @@ exports.getMarketOrders = async (req, res) => {
     res.status(200).send(response);
   } catch (error) {
     res.status(400).send({ error });
+  }
+};
+
+//* DELETE => Delete an order
+exports.deleteOrder = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const order = await Order.findOneAndDelete({ _id: id });
+
+    if (!order) {
+      return res.status(400).send({
+        message: "Order was not found",
+      });
+    } else {
+      const debt = order.totalAmount - order.paid;
+
+      const market = await Market.findById(market_id).exec();
+      market.debt -= debt;
+      await market.save();
+  
+      const employee = await Employee.findById(req.employeeId).exec();
+      employee.balance -= paid;
+      employee.debt -= debt;
+      await employee.save();
+      
+      return res.status(200).send({
+        message: "Order successfully deleted",
+        order,
+      });
+    }
+  } catch (error) {
+    return res.status(400).send({
+      error,
+    });
   }
 };
