@@ -229,14 +229,14 @@ const marketRoutes = (fastify, options, done) => {
 
   //* Market pagination
   fastify.get("/pagination", {
-    preHandler: [auth(["employer"])],
+    preHandler: [auth(["employee", "employer"])],
     schema: marketPaginationOpts,
     handler: allMarkets,
   });
 
   //* Get one market
   fastify.get("/:id", {
-    preHandler: [auth(["employer"])],
+    preHandler: [auth(["employee", "employer"])],
     schema: getMarketOpts,
     handler: getMarket,
   });
