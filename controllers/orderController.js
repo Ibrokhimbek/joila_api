@@ -132,14 +132,12 @@ exports.getEmployeeOrders = async (req, res) => {
     for (let i = 0; i < orders.length; i++) {
       const products = [];
       orders[i].products.forEach(async (product) => {
-        const prod = await Product.findById(product.productId).exec();
-        if (prod) {
-          products.push({
-            ...prod,
-            soldPrice: product.price,
-            qty: product.qty,
-          });
-        }
+        const prod = await Product.find({ _id: product.productId });
+        products.push({
+          ...prod,
+          soldPrice: product.price,
+          qty: product.qty,
+        });
       });
 
       lastOrders.push({ ...orders[i], products });
@@ -179,14 +177,12 @@ exports.getMarketOrders = async (req, res) => {
     for (let i = 0; i < orders.length; i++) {
       const products = [];
       orders[i].products.forEach(async (product) => {
-        const prod = await Product.findById(product.productId).exec();
-        if (prod) {
-          products.push({
-            ...prod,
-            soldPrice: product.price,
-            qty: product.qty,
-          });
-        }
+        const prod = await Product.find({ _id: product.productId });
+        products.push({
+          ...prod,
+          soldPrice: product.price,
+          qty: product.qty,
+        });
       });
 
       lastOrders.push({ ...orders[i], products });
