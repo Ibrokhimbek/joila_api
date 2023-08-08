@@ -1,5 +1,6 @@
 const {
   addOrder,
+  getOrderById,
   getEmployeeOrders,
   getMarketOrders,
   deleteOrder,
@@ -109,6 +110,24 @@ const orderRoutes = (fastify, options, done) => {
       },
     },
     handler: addOrder,
+  });
+
+  //* Get order by id
+  fastify.get("/:id", {
+    preHandler: [auth(["employee", "employer"])],
+    schema: {
+      tags: "Orders",
+      params: {
+        type: "object",
+        required: ["id"],
+        properties: {
+          id: {
+            type: "string",
+          },
+        },
+      },
+    },
+    handler: getOrderById,
   });
 
   //* Order pagination by employee id

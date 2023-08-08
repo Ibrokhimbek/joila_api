@@ -77,6 +77,36 @@ exports.addOrder = async (req, res) => {
   }
 };
 
+//* GET => Order by id
+exports.getOrderById = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const order = await Order.findOne({ _id: id }).exec();
+
+    if (!order) {
+      throw new Error("Order was not found!");
+    } else {
+      // const products = [];
+
+      // for (let i = 0; i < order.products.length; i++) {
+      //   const prod = order.products[i];
+      //   let product = await Product.findById(prod.productId).exec();
+      //   products.push(product);
+      // }
+
+      return res.send({
+        message: "Order was found",
+        data: order,
+      });
+    }
+  } catch (error) {
+    return res.status(500).send({
+      error,
+    });
+  }
+};
+
 //* GET => Pagination orders by employee id
 exports.getEmployeeOrders = async (req, res) => {
   try {
@@ -131,7 +161,7 @@ exports.getMarketOrders = async (req, res) => {
     const response = {
       qtyOrders: qtyOrders.length,
       page,
-      count: products.length,
+      count: orders.length,
       page_size: pageSize,
       data: orders,
     };
@@ -159,12 +189,12 @@ exports.deleteOrder = async (req, res) => {
       const market = await Market.findById(market_id).exec();
       market.debt -= debt;
       await market.save();
-  
+
       const employee = await Employee.findById(req.employeeId).exec();
       employee.balance -= paid;
       employee.debt -= debt;
       await employee.save();
-      
+
       return res.status(200).send({
         message: "Order successfully deleted",
         order,
