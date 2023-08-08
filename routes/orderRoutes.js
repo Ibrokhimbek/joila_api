@@ -116,7 +116,7 @@ const orderRoutes = (fastify, options, done) => {
   fastify.get("/:id", {
     preHandler: [auth(["employee", "employer"])],
     schema: {
-      tags: ["Orders"],
+      tags: ["Order"],
       params: {
         type: "object",
         required: ["id"],
