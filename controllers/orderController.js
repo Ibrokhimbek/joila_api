@@ -129,19 +129,23 @@ exports.getEmployeeOrders = async (req, res) => {
       .limit(pageSize);
 
     let lastOrders = [];
+
     for (let i = 0; i < orders.length; i++) {
       const products = await Promise.all(
         orders[i].products.map(async (product) => {
           const prod = await Product.findOne({ _id: product.productId });
           return {
-            ...prod.toObject(), // Convert Mongoose object to plain JavaScript object
+            ...prod.toObject(),
             soldPrice: product.price,
             qty: product.qty,
           };
         })
       );
 
-      lastOrders.push({ ...orders[i].toObject(), products });
+      lastOrders.push({
+        ...orders[i].toObject(),
+        products,
+      });
     }
 
     const response = {
@@ -149,7 +153,7 @@ exports.getEmployeeOrders = async (req, res) => {
       page,
       count: orders.length,
       page_size: pageSize,
-      data: lastOrders,
+      data: orders,
     };
 
     res.status(200).send(response);
@@ -168,6 +172,7 @@ exports.getMarketOrders = async (req, res) => {
     const qtyOrders = await Order.find({
       market_id: marketId,
     });
+
     const orders = await Order.find({
       market_id: marketId,
     })
@@ -175,19 +180,23 @@ exports.getMarketOrders = async (req, res) => {
       .limit(pageSize);
 
     let lastOrders = [];
+
     for (let i = 0; i < orders.length; i++) {
       const products = await Promise.all(
         orders[i].products.map(async (product) => {
           const prod = await Product.findOne({ _id: product.productId });
           return {
-            ...prod.toObject(), // Convert Mongoose object to plain JavaScript object
+            ...prod.toObject(),
             soldPrice: product.price,
             qty: product.qty,
           };
         })
       );
 
-      lastOrders.push({ ...orders[i].toObject(), products });
+      lastOrders.push({
+        ...orders[i].toObject(),
+        products,
+      });
     }
 
     const response = {
