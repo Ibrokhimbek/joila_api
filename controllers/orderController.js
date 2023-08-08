@@ -128,12 +128,29 @@ exports.getEmployeeOrders = async (req, res) => {
       .skip(skip)
       .limit(pageSize);
 
+    let lastOrders = [];
+    for (let i = 0; i < orders.length; i++) {
+      const products = [];
+      orders[i].products.forEach(async (product) => {
+        const prod = await Product.findById(product.productId).exec();
+        if (prod) {
+          products.push({
+            ...prod,
+            soldPrice: product.price,
+            qty: product.qty,
+          });
+        }
+      });
+
+      lastOrders.push({ ...orders[i], products });
+    }
+
     const response = {
       qtyOrders: qtyOrders.length,
       page,
       count: orders.length,
       page_size: pageSize,
-      data: orders,
+      data: lastOrders,
     };
 
     res.status(200).send(response);
@@ -158,12 +175,29 @@ exports.getMarketOrders = async (req, res) => {
       .skip(skip)
       .limit(pageSize);
 
+    let lastOrders = [];
+    for (let i = 0; i < orders.length; i++) {
+      const products = [];
+      orders[i].products.forEach(async (product) => {
+        const prod = await Product.findById(product.productId).exec();
+        if (prod) {
+          products.push({
+            ...prod,
+            soldPrice: product.price,
+            qty: product.qty,
+          });
+        }
+      });
+
+      lastOrders.push({ ...orders[i], products });
+    }
+
     const response = {
       qtyOrders: qtyOrders.length,
       page,
       count: orders.length,
       page_size: pageSize,
-      data: orders,
+      data: lastOrders,
     };
 
     res.status(200).send(response);

@@ -164,9 +164,6 @@ const orderRoutes = (fastify, options, done) => {
         200: {
           type: "object",
           properties: {
-            _id: {
-              type: "string",
-            },
             qtyOrders: {
               type: "number",
             },
@@ -184,6 +181,9 @@ const orderRoutes = (fastify, options, done) => {
               items: {
                 type: "object",
                 properties: {
+                  _id: {
+                    type: "string",
+                  },
                   client_type: {
                     type: "string",
                     enum: ["Market", "Client"],
@@ -262,9 +262,6 @@ const orderRoutes = (fastify, options, done) => {
         200: {
           type: "object",
           properties: {
-            _id: {
-              type: "string",
-            },
             qtyOrders: {
               type: "number",
             },
@@ -282,6 +279,9 @@ const orderRoutes = (fastify, options, done) => {
               items: {
                 type: "object",
                 properties: {
+                  _id: {
+                    type: "string",
+                  },
                   client_type: {
                     type: "string",
                     enum: ["Market", "Client"],
