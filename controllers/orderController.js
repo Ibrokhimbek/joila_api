@@ -184,7 +184,7 @@ exports.getMarketOrders = async (req, res) => {
     for (let i = 0; i < orders.length; i++) {
       const products = await Promise.all(
         orders[i].products.map(async (product) => {
-          const prod = await Product.findOne({ _id: product.productId });
+          const prod = await Product.findById(product.productId);
           return {
             ...prod.toObject(),
             soldPrice: product.price,
@@ -209,7 +209,7 @@ exports.getMarketOrders = async (req, res) => {
 
     res.status(200).send(response);
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(500).send({ error });
   }
 };
 
