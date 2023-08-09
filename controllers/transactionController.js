@@ -11,7 +11,7 @@ exports.createTransaction = async (req, res) => {
       amountPaid,
     });
     await transaction.save();
-    res.send({ message: "", data: transaction });
+    res.send({ message: "Transaction successfully sent!", data: transaction });
   } catch (err) {
     res.status(500).send({ error: "Failed to create transaction" });
   }
@@ -19,8 +19,12 @@ exports.createTransaction = async (req, res) => {
 
 exports.getTransactions = async (req, res) => {
   try {
-    const transactions = await Transaction.find();
-    res.send(transactions);
+    const employeeId = req.employeeId || req.query.employeeId;
+    const transactions = await Transaction.find({ fromEmployeeId: employeeId });
+    res.send({
+      message: "All transactions",
+      data: transactions,
+    });
   } catch (err) {
     res.status(500).send({ error: "Failed to fetch transactions" });
   }
@@ -33,7 +37,10 @@ exports.getTransaction = async (req, res) => {
     if (!transaction) {
       return res.status(404).send({ error: "Transaction not found" });
     }
-    res.send(transaction);
+    res.send({
+      message: "Transaction was found!",
+      data: transaction,
+    });
   } catch (err) {
     res.status(500).send({ error: "Failed to fetch transaction" });
   }
@@ -61,11 +68,11 @@ exports.updateTransaction = async (req, res) => {
       $inc: { balance: -transaction.amountPaid },
     });
 
-    res.send(transaction);
-
-    res.send(transaction);
+    res.send({
+      message: "Transaction was updated!",
+      data: transaction,
+    });
   } catch (err) {
-    console.log(err);
     res.status(500).send({ error: "Failed to update transaction: " + err });
   }
 };

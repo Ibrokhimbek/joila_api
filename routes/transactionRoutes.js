@@ -13,33 +13,158 @@ const transactionRoutes = (fastify, options, done) => {
     preHandler: [auth(["employee"])],
     schema: {
       tags: ["Transaction"],
+      body: {
+        type: "object",
+        required: ["amountPaid"],
+        properties: {
+          amountPaid: {
+            type: "number",
+          },
+        },
+      },
+      headers: {
+        type: "object",
+        required: ["Authorization"],
+        properties: {
+          Authorization: {
+            type: "string",
+          },
+        },
+      },
+      response: {
+        200: {
+          type: "object",
+          properties: {
+            message: {
+              type: "string",
+            },
+            data: {
+              type: "object",
+            },
+          },
+        },
+      },
     },
     handler: createTransaction,
   });
 
-  //* Get all transactions
+  //* Get all transactions by employee id
   fastify.get("", {
-    preHandler: [auth(["employee"])],
+    preHandler: [auth(["employee", "employer"])],
     schema: {
       tags: ["Transaction"],
+      headers: {
+        type: "object",
+        required: ["Authorization"],
+        properties: {
+          Authorization: {
+            type: "string",
+            description: "Employee or Employer token",
+          },
+        },
+      },
+      query: {
+        type: "object",
+        properties: {
+          employeeId: {
+            type: "string",
+            description: "When employer requests this route",
+          },
+        },
+      },
+      response: {
+        200: {
+          type: "object",
+          properties: {
+            message: {
+              type: "string",
+            },
+            data: {
+              type: "array",
+            },
+          },
+        },
+      },
     },
     handler: getTransactions,
   });
 
   //* Get one transaction by id
   fastify.get("/:id", {
-    preHandler: [auth(["employee"])],
+    preHandler: [auth(["employee", "employer"])],
     schema: {
       tags: ["Transaction"],
+      headers: {
+        type: "object",
+        required: ["Authorization"],
+        properties: {
+          Authorization: {
+            type: "string",
+            description: "Employee or Employer token",
+          },
+        },
+      },
+      params: {
+        type: "object",
+        properties: {
+          id: {
+            type: "string",
+          },
+        },
+      },
+      response: {
+        200: {
+          type: "object",
+          properties: {
+            message: {
+              type: "string",
+            },
+            data: {
+              type: "object",
+            },
+          },
+        },
+      },
     },
     handler: getTransaction,
   });
 
   //* Edit transaction by id
   fastify.put("/:id", {
-    preHandler: [auth(["employee"])],
+    preHandler: [auth(["employer"])],
     schema: {
       tags: ["Transaction"],
+      headers: {
+        type: "object",
+        required: ["Authorization"],
+        properties: {
+          Authorization: {
+            type: "string",
+            description: "Employer token",
+          },
+        },
+      },
+      params: {
+        type: "object",
+        properties: {
+          id: {
+            type: "string",
+          },
+        },
+      },
+      response: {
+        200: {
+          type: "object",
+          properties: {
+            message: {
+              type: "string",
+            },
+            data: {
+              type: "object",
+            },
+          },
+        },
+      },
     },
     handler: updateTransaction,
   });
@@ -49,6 +174,34 @@ const transactionRoutes = (fastify, options, done) => {
     preHandler: [auth(["employee"])],
     schema: {
       tags: ["Transaction"],
+      headers: {
+        type: "object",
+        required: ["Authorization"],
+        properties: {
+          Authorization: {
+            type: "string",
+            description: "Employee token",
+          },
+        },
+      },
+      params: {
+        type: "object",
+        properties: {
+          id: {
+            type: "string",
+          },
+        },
+      },
+      response: {
+        200: {
+          type: "object",
+          properties: {
+            message: {
+              type: "string",
+            },
+          },
+        },
+      },
     },
     handler: deleteTransaction,
   });

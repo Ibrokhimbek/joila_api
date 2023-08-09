@@ -22,6 +22,7 @@ fastify.register(require("@fastify/swagger"), {
       { name: "Product", description: "Product related end-points" },
       { name: "Market", description: "Market related end-points" },
       { name: "Order", description: "Order related end-points" },
+      { name: "Transaction", description: "Order related end-points" },
     ],
   },
 });
