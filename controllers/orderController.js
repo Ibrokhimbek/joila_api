@@ -87,17 +87,24 @@ exports.getOrderById = async (req, res) => {
     if (!order) {
       throw new Error("Order was not found!");
     } else {
-      // const products = [];
+      const products = [];
 
-      // for (let i = 0; i < order.products.length; i++) {
-      //   const prod = order.products[i];
-      //   let product = await Product.findById(prod.productId).exec();
-      //   products.push(product);
-      // }
+      for (let i = 0; i < order.products.length; i++) {
+        let product = await Product.findById(order.products[i].productId);
+        products.push({
+          ...product.toObject(),
+          soldPrice: order.products[i].price,
+          qty: order.products[i].qty,
+        });
+      }
+      const lastOrder = {
+        ...order.toObject(),
+        products: [...products],
+      };
 
       return res.send({
         message: "Order was found",
-        data: order,
+        data: lastOrder,
       });
     }
   } catch (error) {
@@ -212,49 +219,6 @@ exports.getMarketOrders = async (req, res) => {
     res.status(500).send({ error });
   }
 };
-
-// exports.getMarketOrders = async (req, res) => {
-//   try {
-//     const { page = 1, pageSize = 10, marketId } = req.query;
-//     const skip = (page - 1) * pageSize;
-
-//     const qtyOrders = await Order.find({
-//       market_id: marketId,
-//     });
-//     const orders = await Order.find({
-//       market_id: marketId,
-//     })
-//       .skip(skip)
-//       .limit(pageSize);
-
-//     let lastOrders = [];
-//     for (let i = 0; i < orders.length; i++) {
-//       const products = [];
-//       orders[i].products.forEach(async (product) => {
-//         const prod = await Product.find({ _id: product.productId });
-//         products.push({
-//           ...prod,
-//           soldPrice: product.price,
-//           qty: product.qty,
-//         });
-//       });
-
-//       lastOrders.push({ ...orders[i], products });
-//     }
-
-//     const response = {
-//       qtyOrders: qtyOrders.length,
-//       page,
-//       count: orders.length,
-//       page_size: pageSize,
-//       data: lastOrders,
-//     };
-
-//     res.status(200).send(response);
-//   } catch (error) {
-//     res.status(400).send({ error });
-//   }
-// };
 
 //* DELETE => Delete an order
 exports.deleteOrder = async (req, res) => {
