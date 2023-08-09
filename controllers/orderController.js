@@ -153,7 +153,7 @@ exports.getEmployeeOrders = async (req, res) => {
       page,
       count: orders.length,
       page_size: pageSize,
-      data: orders,
+      data: lastOrders,
     };
 
     res.status(200).send(response);
@@ -184,7 +184,7 @@ exports.getMarketOrders = async (req, res) => {
     for (let i = 0; i < orders.length; i++) {
       const products = await Promise.all(
         orders[i].products.map(async (product) => {
-          const prod = await Product.findById(product.productId);
+          const prod = await Product.findOne({ _id: product.productId });
           return {
             ...prod.toObject(),
             soldPrice: product.price,

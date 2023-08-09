@@ -196,21 +196,6 @@ const orderRoutes = (fastify, options, done) => {
                   },
                   products: {
                     type: "array",
-                    items: {
-                      type: "object",
-                      required: ["productId", "qty", "price"],
-                      properties: {
-                        productId: {
-                          type: "string",
-                        },
-                        qty: {
-                          type: "number",
-                        },
-                        price: {
-                          type: "number",
-                        },
-                      },
-                    },
                   },
                   paid: {
                     type: "number",
@@ -228,7 +213,7 @@ const orderRoutes = (fastify, options, done) => {
     handler: getEmployeeOrders,
   });
 
-  //* Order pagination by employee id
+  //* Order pagination by market id
   fastify.get("/market/pagination", {
     preHandler: [auth(["employee", "employer"])],
     schema: {
@@ -294,21 +279,6 @@ const orderRoutes = (fastify, options, done) => {
                   },
                   products: {
                     type: "array",
-                    items: {
-                      type: "object",
-                      required: ["productId", "qty", "price"],
-                      properties: {
-                        productId: {
-                          type: "string",
-                        },
-                        qty: {
-                          type: "number",
-                        },
-                        price: {
-                          type: "number",
-                        },
-                      },
-                    },
                   },
                   paid: {
                     type: "number",
