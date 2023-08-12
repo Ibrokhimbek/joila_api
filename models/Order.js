@@ -10,6 +10,7 @@ const OrderSchema = new Schema(
     },
     market_id: {
       type: String,
+      default: null,
     },
     client_name: {
       type: String,
