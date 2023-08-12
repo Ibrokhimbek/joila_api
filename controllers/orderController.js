@@ -51,9 +51,11 @@ exports.addOrder = async (req, res) => {
     }
     const debt = totalAmount - paid;
 
-    const market = await Market.findById(market_id).exec();
-    market.debt += debt;
-    await market.save();
+    if (market_id) {
+      const market = await Market.findById(market_id).exec();
+      market.debt += debt;
+      await market.save();
+    }
 
     const employee = await Employee.findById(req.employeeId).exec();
     employee.balance += paid;
@@ -71,7 +73,7 @@ exports.addOrder = async (req, res) => {
       order,
     });
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       error,
     });
   }

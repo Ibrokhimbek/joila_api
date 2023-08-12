@@ -9,7 +9,7 @@ const OrderSchema = new Schema(
       enum: ["Market", "Client"],
     },
     market_id: {
-      type: String,
+      type: Schema.Types.ObjectId,
       default: null,
     },
     client_name: {
