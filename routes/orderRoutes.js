@@ -25,6 +25,7 @@ const orderRoutes = (fastify, options, done) => {
       },
       body: {
         type: "object",
+        required: ["client_type"],
         properties: {
           client_type: {
             type: "string",
