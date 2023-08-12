@@ -142,7 +142,7 @@ exports.getEmployeeOrders = async (req, res) => {
         orders[i].products.map(async (product) => {
           const prod = await Product.findOne({ _id: product.productId });
           return {
-            ...prod.toObject(),
+            ...JSON.parse(JSON.stringify(prod)),
             soldPrice: product.price,
             qty: product.qty,
           };
