@@ -92,13 +92,13 @@ exports.getOrderById = async (req, res) => {
       for (let i = 0; i < order.products.length; i++) {
         let product = await Product.findById(order.products[i].productId);
         products.push({
-          ...product.toObject(),
+          ...product,
           soldPrice: order.products[i].price,
           qty: order.products[i].qty,
         });
       }
       const lastOrder = {
-        ...order.toObject(),
+        ...order,
         products: [...products],
       };
 
@@ -142,7 +142,7 @@ exports.getEmployeeOrders = async (req, res) => {
         orders[i].products.map(async (product) => {
           const prod = await Product.findOne({ _id: product.productId });
           return {
-            ...prod.toObject(),
+            ...prod,
             soldPrice: product.price,
             qty: product.qty,
           };
@@ -150,7 +150,7 @@ exports.getEmployeeOrders = async (req, res) => {
       );
 
       lastOrders.push({
-        ...orders[i].toObject(),
+        ...orders[i],
         products,
       });
     }
@@ -193,7 +193,7 @@ exports.getMarketOrders = async (req, res) => {
         orders[i].products.map(async (product) => {
           const prod = await Product.findOne({ _id: product.productId });
           return {
-            ...prod.toObject(),
+            ...prod,
             soldPrice: product.price,
             qty: product.qty,
           };
@@ -201,7 +201,7 @@ exports.getMarketOrders = async (req, res) => {
       );
 
       lastOrders.push({
-        ...orders[i].toObject(),
+        ...orders[i],
         products,
       });
     }
