@@ -23,43 +23,42 @@ const orderRoutes = (fastify, options, done) => {
           },
         },
       },
-      body: {
-        type: "object",
-        required: ["client_type"],
-        properties: {
-          client_type: {
-            type: "string",
-            enum: ["Market", "Client"],
-          },
-          market_id: {
-            type: "string",
-          },
-          client_name: {
-            type: "string",
-          },
-          products: {
-            type: "array",
-            items: {
-              type: "object",
-              required: ["productId", "qty", "price"],
-              properties: {
-                productId: {
-                  type: "string",
-                },
-                qty: {
-                  type: "number",
-                },
-                price: {
-                  type: "number",
-                },
-              },
-            },
-          },
-          paid: {
-            type: "number",
-          },
-        },
-      },
+      // body: {
+      //   type: "object",
+      //   properties: {
+      //     client_type: {
+      //       type: "string",
+      //       enum: ["Market", "Client"],
+      //     },
+      //     market_id: {
+      //       type: "string",
+      //     },
+      //     client_name: {
+      //       type: "string",
+      //     },
+      //     products: {
+      //       type: "array",
+      //       items: {
+      //         type: "object",
+      //         required: ["productId", "qty", "price"],
+      //         properties: {
+      //           productId: {
+      //             type: "string",
+      //           },
+      //           qty: {
+      //             type: "number",
+      //           },
+      //           price: {
+      //             type: "number",
+      //           },
+      //         },
+      //       },
+      //     },
+      //     paid: {
+      //       type: "number",
+      //     },
+      //   },
+      // },
       response: {
         200: {
           type: "object",
