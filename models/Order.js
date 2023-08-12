@@ -11,7 +11,6 @@ const OrderSchema = new Schema(
     market_id: {
       type: Schema.Types.ObjectId,
       ref: "Market",
-      default: null,
     },
     client_name: {
       type: String,
