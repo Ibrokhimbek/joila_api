@@ -130,10 +130,11 @@ exports.getEmployeeOrders = async (req, res) => {
 
     const qtyOrders = await Order.find({
       employee_id: req.employeeId || employeeId,
-    });
+    }).countDocuments();
     const orders = await Order.find({
       employee_id: req.employeeId || employeeId,
     })
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(pageSize);
 
@@ -158,7 +159,7 @@ exports.getEmployeeOrders = async (req, res) => {
     }
 
     const response = {
-      qtyOrders: qtyOrders.length,
+      qtyOrders: qtyOrders,
       page,
       count: orders.length,
       page_size: pageSize,
@@ -180,11 +181,12 @@ exports.getMarketOrders = async (req, res) => {
 
     const qtyOrders = await Order.find({
       market_id: marketId,
-    });
+    }).countDocuments();
 
     const orders = await Order.find({
       market_id: marketId,
     })
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(pageSize);
 
@@ -209,7 +211,7 @@ exports.getMarketOrders = async (req, res) => {
     }
 
     const response = {
-      qtyOrders: qtyOrders.length,
+      qtyOrders: qtyOrders,
       page,
       count: orders.length,
       page_size: pageSize,

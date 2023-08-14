@@ -36,6 +36,7 @@ exports.allProducts = async (req, res) => {
 
     const totalProducts = await Product.countDocuments();
     const products = await Product.find({ employerId: req.employerId })
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(pageSize);
 
