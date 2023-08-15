@@ -20,13 +20,30 @@ exports.createTransaction = async (req, res) => {
 exports.getTransactions = async (req, res) => {
   try {
     const employeeId = req.employeeId || req.query.employeeId;
-    const transactions = await Transaction.find({ fromEmployeeId: employeeId });
+
+    const { search } = req.query;
+    let query = {};
+
+    if (search) {
+      const searchNumber = parseFloat(search);
+
+      if (!isNaN(searchNumber)) {
+        query = {
+          $or: [{ amountPaid: searchNumber }],
+        };
+      }
+    }
+
+    const transactions = await Transaction.find({
+      fromEmployeeId: employeeId,
+      ...query,
+    });
     res.send({
       message: "All transactions",
       data: transactions,
     });
   } catch (err) {
-    res.status(500).send({ error: "Failed to fetch transactions" });
+    res.status(500).send({ error: err });
   }
 };
 

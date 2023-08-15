@@ -28,8 +28,31 @@ exports.addProduct = async (req, res) => {
   }
 };
 
+//* GET => Products and search
+exports.getProducts = async (req, res) => {
+  try {
+    const { search } = req.query;
+    let query = {};
+
+    if (search) {
+      query = {
+        $or: [{ code: { $regex: search, $options: "i" } }],
+      };
+    }
+
+    const products = await Product.find(query);
+
+    return res.send({
+      message: "Products successfully found",
+      data: products,
+    });
+  } catch (error) {
+    res.status(500).send({ error });
+  }
+};
+
 //* GET => Product pagination
-exports.allProducts = async (req, res) => {
+exports.productsPagination = async (req, res) => {
   try {
     const { page = 1, pageSize = 10 } = req.query;
     const skip = (page - 1) * pageSize;

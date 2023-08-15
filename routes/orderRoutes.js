@@ -1,5 +1,6 @@
 const {
   addOrder,
+  getOrders,
   getOrderById,
   getEmployeeOrders,
   getMarketOrders,
@@ -110,6 +111,12 @@ const orderRoutes = (fastify, options, done) => {
       },
     },
     handler: addOrder,
+  });
+
+  //* Orders and search
+  fastify.get("", {
+    preHandler: [auth(["employer", "employee"])],
+    handler: getOrders,
   });
 
   //* Get order by id

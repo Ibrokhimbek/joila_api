@@ -3,11 +3,13 @@ const mongoose = require("mongoose");
 const TransactionSchema = new mongoose.Schema(
   {
     fromEmployeeId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employee",
       required: true,
     },
     toEmployerId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employer",
       required: true,
     },
     amountPaid: {

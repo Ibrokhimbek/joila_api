@@ -26,8 +26,34 @@ exports.addMarket = async (req, res) => {
   }
 };
 
+//* GET => Markets and search
+exports.getMarkets = async (req, res) => {
+  try {
+    const { search } = req.query;
+    let query = {};
+
+    if (search) {
+      query = {
+        $or: [
+          { market_name: { $regex: search, $options: "i" } },
+          { location: { $regex: search, $options: "i" } },
+        ],
+      };
+    }
+
+    const markets = await Market.find(query);
+
+    return res.send({
+      message: "Markets successfully found",
+      data: markets,
+    });
+  } catch (error) {
+    res.status(500).send({ error });
+  }
+};
+
 //* GET => Market pagination
-exports.allMarkets = async (req, res) => {
+exports.marketPagination = async (req, res) => {
   try {
     const { page = 1, pageSize = 10 } = req.query;
     const skip = (page - 1) * pageSize;

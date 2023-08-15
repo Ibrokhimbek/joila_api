@@ -1,6 +1,7 @@
 const {
   addProduct,
-  allProducts,
+  getProducts,
+  productsPagination,
   editProduct,
   deleteProduct,
   getProduct,
@@ -235,11 +236,17 @@ const productRoutes = (fastify, options, done) => {
     handler: addProduct,
   });
 
+  //* Products and search
+  fastify.get("", {
+    preHandler: [auth(["employer", "employee"])],
+    handler: getProducts,
+  });
+
   //* Product pagination
   fastify.get("/pagination", {
     preHandler: [auth(["employer", "employee"])],
     schema: getProdPaginationOpts,
-    handler: allProducts,
+    handler: productsPagination,
   });
 
   //* Get one product

@@ -1,6 +1,7 @@
 const {
   addMarket,
-  allMarkets,
+  getMarkets,
+  marketPagination,
   editMarket,
   deleteMarket,
   getMarket,
@@ -227,11 +228,17 @@ const marketRoutes = (fastify, options, done) => {
     handler: addMarket,
   });
 
+  //* Markets and search
+  fastify.get("", {
+    preHandler: [auth(["employer", "employee"])],
+    handler: getMarkets,
+  });
+
   //* Market pagination
   fastify.get("/pagination", {
     preHandler: [auth(["employee", "employer"])],
     schema: marketPaginationOpts,
-    handler: allMarkets,
+    handler: marketPagination,
   });
 
   //* Get one market

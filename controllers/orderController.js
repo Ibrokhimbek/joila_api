@@ -79,6 +79,36 @@ exports.addOrder = async (req, res) => {
   }
 };
 
+//* GET => Orders and search
+exports.getOrders = async (req, res) => {
+  try {
+    const { search } = req.query;
+    let query = {};
+
+    if (search) {
+      const market = await Market.find({
+        $or: [{ market_name: { $regex: search, $options: "i" } }],
+      });
+
+      query = {
+        $or: [
+          { market_id: market[0]?._id },
+          { client_name: { $regex: search, $options: "i" } },
+        ],
+      };
+    }
+
+    const orders = await Order.find(query).sort({ createdAt: -1 });
+
+    return res.send({
+      message: "Orders successfully found",
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).send({ error });
+  }
+};
+
 //* GET => Order by id
 exports.getOrderById = async (req, res) => {
   const id = req.params.id;
