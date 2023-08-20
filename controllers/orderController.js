@@ -223,6 +223,7 @@ exports.getMarketOrders = async (req, res) => {
     let lastOrders = [];
 
     for (let i = 0; i < orders.length; i++) {
+      const marketInfo = await Market.findById(orders[i].market_id).exec();
       const products = await Promise.all(
         orders[i].products.map(async (product) => {
           const prod = await Product.findOne({ _id: product.productId });
@@ -236,6 +237,7 @@ exports.getMarketOrders = async (req, res) => {
 
       lastOrders.push({
         ...orders[i].toObject(),
+        market_name: marketInfo.market_name,
         products,
       });
     }

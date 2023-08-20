@@ -116,6 +116,9 @@ const orderRoutes = (fastify, options, done) => {
   //* Orders and search
   fastify.get("", {
     preHandler: [auth(["employer", "employee"])],
+    schema: {
+      tags: ["Order"],
+    },
     handler: getOrders,
   });
 
@@ -279,6 +282,9 @@ const orderRoutes = (fastify, options, done) => {
                     enum: ["Market", "Client"],
                   },
                   market_id: {
+                    type: "string",
+                  },
+                  market_name: {
                     type: "string",
                   },
                   client_name: {
