@@ -100,9 +100,31 @@ exports.getOrders = async (req, res) => {
 
     const orders = await Order.find(query).sort({ createdAt: -1 });
 
+    let lastOrders = [];
+
+    for (let i = 0; i < orders.length; i++) {
+      const marketInfo = await Market.findById(orders[i].market_id).exec();
+      const products = await Promise.all(
+        orders[i].products.map(async (product) => {
+          const prod = await Product.findOne({ _id: product.productId });
+          return {
+            ...JSON.parse(JSON.stringify(prod)),
+            soldPrice: product.price,
+            qty: product.qty,
+          };
+        })
+      );
+
+      lastOrders.push({
+        ...orders[i].toObject(),
+        market_name: marketInfo.market_name,
+        products,
+      });
+    }
+
     return res.send({
       message: "Orders successfully found",
-      data: orders,
+      data: lastOrders,
     });
   } catch (error) {
     res.status(500).send({ error });
@@ -121,14 +143,15 @@ exports.getOrderById = async (req, res) => {
     } else {
       const products = [];
 
-      for (let i = 0; i < order.products.length; i++) {
-        let product = await Product.findById(order.products[i].productId);
-        products.push({
-          ...product.toObject(),
-          soldPrice: order.products[i].price,
-          qty: order.products[i].qty,
-        });
-      }
+      let product = await Product.findById(order.products[i].productId);
+      const marketInfo = await Market.findById(order.market_id).exec();
+      products.push({
+        ...product.toObject(),
+        market_name: marketInfo.market_name,
+        soldPrice: order.products[i].price,
+        qty: order.products[i].qty,
+      });
+
       const lastOrder = {
         ...order.toObject(),
         products: [...products],
@@ -171,6 +194,7 @@ exports.getEmployeeOrders = async (req, res) => {
     let lastOrders = [];
 
     for (let i = 0; i < orders.length; i++) {
+      const marketInfo = await Market.findById(orders[i].market_id).exec();
       const products = await Promise.all(
         orders[i].products.map(async (product) => {
           const prod = await Product.findOne({ _id: product.productId });
@@ -184,6 +208,7 @@ exports.getEmployeeOrders = async (req, res) => {
 
       lastOrders.push({
         ...orders[i].toObject(),
+        market_name: marketInfo.market_name,
         products,
       });
     }
