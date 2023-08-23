@@ -192,6 +192,7 @@ exports.getEmployeeOrders = async (req, res) => {
       .limit(pageSize);
 
     let lastOrders = [];
+    console.log(lastOrders);
 
     for (let i = 0; i < orders.length; i++) {
       const marketInfo = await Market.findById(orders[i].market_id).exec();
