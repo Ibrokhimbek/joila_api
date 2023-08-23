@@ -205,11 +205,10 @@ exports.getEmployeeOrders = async (req, res) => {
           };
         })
       );
-      console.log(lastOrders);
 
       lastOrders.push({
         ...orders[i].toObject(),
-        market_name: marketInfo?.market_name,
+        market_name: marketInfo.market_name,
         products,
       });
     }
