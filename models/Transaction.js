@@ -13,7 +13,7 @@ const TransactionSchema = new mongoose.Schema(
       required: true,
     },
     amountPaid: {
-      type: Number,
+      type: String,
       min: 0,
       required: true,
     },

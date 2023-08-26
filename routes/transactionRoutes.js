@@ -31,19 +31,6 @@ const transactionRoutes = (fastify, options, done) => {
           },
         },
       },
-      response: {
-        200: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-            },
-            data: {
-              type: "object",
-            },
-          },
-        },
-      },
     },
     handler: createTransaction,
   });
@@ -69,19 +56,6 @@ const transactionRoutes = (fastify, options, done) => {
           employeeId: {
             type: "string",
             description: "When employer requests this route",
-          },
-        },
-      },
-      response: {
-        200: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-            },
-            data: {
-              type: "array",
-            },
           },
         },
       },
@@ -112,19 +86,6 @@ const transactionRoutes = (fastify, options, done) => {
           },
         },
       },
-      response: {
-        200: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-            },
-            data: {
-              type: "object",
-            },
-          },
-        },
-      },
     },
     handler: getTransaction,
   });
@@ -152,19 +113,6 @@ const transactionRoutes = (fastify, options, done) => {
           },
         },
       },
-      response: {
-        200: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-            },
-            data: {
-              type: "object",
-            },
-          },
-        },
-      },
     },
     handler: updateTransaction,
   });
@@ -189,16 +137,6 @@ const transactionRoutes = (fastify, options, done) => {
         properties: {
           id: {
             type: "string",
-          },
-        },
-      },
-      response: {
-        200: {
-          type: "object",
-          properties: {
-            message: {
-              type: "string",
-            },
           },
         },
       },

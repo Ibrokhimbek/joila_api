@@ -5,10 +5,15 @@ const Transaction = require("../models/Transaction");
 exports.createTransaction = async (req, res) => {
   try {
     const { amountPaid } = req.body;
+
+    if (typeof amountPaid !== "number") {
+      return res.status(401).json({ error: "Amount paid must be a number" });
+    }
+
     const transaction = new Transaction({
       fromEmployeeId: req.employeeId,
       toEmployerId: req.employerId,
-      amountPaid,
+      amountPaid: amountPaid.toString(),
     });
     await transaction.save();
     res.send({ message: "Transaction successfully sent!", data: transaction });
@@ -25,19 +30,13 @@ exports.getTransactions = async (req, res) => {
     let query = {};
 
     if (search) {
-      const searchNumber = parseFloat(search);
-
-      if (!isNaN(searchNumber)) {
-        query = {
-          $or: [{ amountPaid: searchNumber }],
-        };
-      }
+      query = {
+        $or: [{ fromEmployeeId: employeeId }],
+        $or: [{ amountPaid: { $regex: search, $options: "i" } }],
+      };
     }
 
-    const transactions = await Transaction.find({
-      fromEmployeeId: employeeId,
-      ...query,
-    });
+    const transactions = await Transaction.find(query).exec();
     res.send({
       message: "All transactions",
       data: transactions,
