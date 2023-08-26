@@ -136,7 +136,7 @@ exports.getOrderById = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const order = await Order.findOne({ _id: id }).exec();
+    const order = await Order.findById(id).exec();
 
     if (!order) {
       throw new Error("Order was not found!");
@@ -194,7 +194,8 @@ exports.getEmployeeOrders = async (req, res) => {
     let lastOrders = [];
 
     for (let i = 0; i < orders.length; i++) {
-      const marketInfo = await Market.findById(orders[i].market_id).exec() || null;
+      const marketInfo =
+        (await Market.findById(orders[i].market_id).exec()) || null;
       const products = await Promise.all(
         orders[i].products.map(async (product) => {
           const prod = await Product.findOne({ _id: product.productId });
