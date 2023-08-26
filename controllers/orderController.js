@@ -135,7 +135,7 @@ exports.getOrderById = async (req, res) => {
 
   try {
     const order = await Order.findById(id).exec();
-    console.log(order);
+
     if (!order) {
       throw new Error("Order was not found!");
     } else {
@@ -228,7 +228,6 @@ exports.getEmployeeOrders = async (req, res) => {
 
     res.status(200).send(response);
   } catch (error) {
-    console.log(error);
     res.status(400).send({ error });
   }
 };
