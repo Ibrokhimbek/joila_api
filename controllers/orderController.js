@@ -136,24 +136,26 @@ exports.getOrderById = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const order = await Order.findById(id).exec();
+    const order = await Order.findById(id);
 
     if (!order) {
       throw new Error("Order was not found!");
     } else {
       const products = [];
-
-      let product = await Product.findById(order.products[i].productId);
       const marketInfo = await Market.findById(order.market_id).exec();
-      products.push({
-        ...product.toObject(),
-        market_name: marketInfo.market_name,
-        soldPrice: order.products[i].price,
-        qty: order.products[i].qty,
-      });
+
+      for (let i = 0; i < order.products.length; i++) {
+        let product = await Product.findById(order.products[i].productId);
+        products.push({
+          ...JSON.parse(JSON.stringify(product)),
+          soldPrice: order.products[i].price,
+          qty: order.products[i].qty,
+        });
+      }
 
       const lastOrder = {
         ...order.toObject(),
+        market_name: marketInfo.market_name,
         products: [...products],
       };
 
@@ -194,8 +196,7 @@ exports.getEmployeeOrders = async (req, res) => {
     let lastOrders = [];
 
     for (let i = 0; i < orders.length; i++) {
-      const marketInfo =
-        (await Market.findById(orders[i].market_id).exec()) || null;
+      const marketInfo = await Market.findById(orders[i].market_id).exec();
       const products = await Promise.all(
         orders[i].products.map(async (product) => {
           const prod = await Product.findOne({ _id: product.productId });
@@ -209,7 +210,7 @@ exports.getEmployeeOrders = async (req, res) => {
 
       lastOrders.push({
         ...orders[i].toObject(),
-        market_name: marketInfo?.market_name || null,
+        market_name: marketInfo?.market_name,
         products,
       });
     }
