@@ -136,8 +136,8 @@ exports.getOrderById = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const order = await Order.findById(id);
-
+    const order = await Order.findById(id).exec();
+    console.log(order);
     if (!order) {
       throw new Error("Order was not found!");
     } else {
@@ -145,7 +145,9 @@ exports.getOrderById = async (req, res) => {
       const marketInfo = await Market.findById(order.market_id).exec();
 
       for (let i = 0; i < order.products.length; i++) {
-        let product = await Product.findById(order.products[i].productId);
+        let product = await Product.findById(
+          order.products[i].productId
+        ).exec();
         products.push({
           ...JSON.parse(JSON.stringify(product)),
           soldPrice: order.products[i].price,
@@ -154,9 +156,9 @@ exports.getOrderById = async (req, res) => {
       }
 
       const lastOrder = {
-        ...order.toObject(),
-        market_name: marketInfo.market_name,
-        products: [...products],
+        ...JSON.parse(JSON.stringify(order)),
+        market_name: marketInfo?.market_name,
+        products,
       };
 
       return res.send({
@@ -197,16 +199,19 @@ exports.getEmployeeOrders = async (req, res) => {
 
     for (let i = 0; i < orders.length; i++) {
       const marketInfo = await Market.findById(orders[i].market_id).exec();
-      const products = await Promise.all(
-        orders[i].products.map(async (product) => {
-          const prod = await Product.findOne({ _id: product.productId });
-          return {
-            ...JSON.parse(JSON.stringify(prod)),
-            soldPrice: product.price,
-            qty: product.qty,
-          };
-        })
-      );
+ 
+      const products = [];
+
+      for (let j = 0; j < orders[i].products.length; j++) {
+        let product = await Product.findById(
+          orders[i].products[j].productId
+        ).exec();
+        products.push({
+          ...JSON.parse(JSON.stringify(product)),
+          soldPrice: orders[i].products[j].price,
+          qty: orders[i].products[j].qty,
+        });
+      }
 
       lastOrders.push({
         ...orders[i].toObject(),

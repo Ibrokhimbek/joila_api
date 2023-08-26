@@ -170,55 +170,6 @@ const orderRoutes = (fastify, options, done) => {
           },
         },
       },
-      response: {
-        200: {
-          type: "object",
-          properties: {
-            qtyOrders: {
-              type: "number",
-            },
-            page: {
-              type: "number",
-            },
-            count: {
-              type: "number",
-            },
-            page_size: {
-              type: "number",
-            },
-            data: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  _id: {
-                    type: "string",
-                  },
-                  client_type: {
-                    type: "string",
-                    enum: ["Market", "Client"],
-                  },
-                  market_id: {
-                    type: "string",
-                  },
-                  client_name: {
-                    type: "string",
-                  },
-                  products: {
-                    type: "array",
-                  },
-                  paid: {
-                    type: "number",
-                  },
-                  totalAmount: {
-                    type: "number",
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
     },
     handler: getEmployeeOrders,
   });
