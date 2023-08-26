@@ -86,6 +86,7 @@ const marketPaginationOpts = {
               market_name: { type: "string" },
               phone_number: { type: "string" },
               location: { type: "string" },
+              debt: { type: "string" },
             },
           },
         },
