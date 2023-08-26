@@ -91,10 +91,8 @@ exports.getOrders = async (req, res) => {
       });
 
       query = {
-        $or: [
-          { market_id: market[0]?._id },
-          { client_name: { $regex: search, $options: "i" } },
-        ],
+        $or: [{ market_id: market[0]?._id }],
+        $or: [{ client_name: { $regex: search, $options: "i" } }],
       };
     }
 
@@ -116,8 +114,8 @@ exports.getOrders = async (req, res) => {
       );
 
       lastOrders.push({
-        ...orders[i].toObject(),
-        market_name: marketInfo.market_name,
+        ...JSON.parse(JSON.stringify(orders[i])),
+        market_name: marketInfo?.market_name,
         products,
       });
     }
@@ -199,7 +197,7 @@ exports.getEmployeeOrders = async (req, res) => {
 
     for (let i = 0; i < orders.length; i++) {
       const marketInfo = await Market.findById(orders[i].market_id).exec();
- 
+
       const products = [];
 
       for (let j = 0; j < orders[i].products.length; j++) {
