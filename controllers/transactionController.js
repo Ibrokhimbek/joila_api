@@ -36,7 +36,7 @@ exports.getTransactions = async (req, res) => {
       };
     }
 
-    const transactions = await Transaction.find(query).exec();
+    const transactions = await Transaction.find(query).sort({ createdAt: -1 });
     res.send({
       message: "All transactions",
       data: transactions,
