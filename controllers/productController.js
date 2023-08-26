@@ -5,22 +5,33 @@ exports.addProduct = async (req, res) => {
   const { code, name, qty, price, unit } = req.body;
 
   try {
-    //* creating a product
-    const product = new Product({
-      code,
-      name,
-      qty,
-      price,
-      unit,
-      employerId: req.employerId,
-    });
+    const findProd = await Product.findOne({ code: code }).exec();
 
-    await product.save();
+    if (!findProd) {
+      //* creating a product
+      const product = new Product({
+        code,
+        name,
+        qty,
+        price,
+        unit,
+        employerId: req.employerId,
+      });
 
-    return res.status(201).send({
-      message: "Product successfully created",
-      product,
-    });
+      await product.save();
+
+      return res.status(201).send({
+        message: "Product successfully created",
+        product,
+      });
+    } else {
+      findProd.qty += qty;
+      await findProd.save();
+      return res.status(200).send({
+        message: "Product successfully updated",
+        findProd,
+      });
+    }
   } catch (error) {
     return res.status(400).send({
       error,
