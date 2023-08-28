@@ -208,7 +208,7 @@ exports.editEmployee = async (req, res) => {
     phone_number: req.body.phone_number,
   };
 
-  if (req.body.password.length >= 8) {
+  if (req.body.password?.length >= 8) {
     hashedPassword = await bcrypt.hash(password, 10);
     editOpts.password = hashedPassword;
   }
