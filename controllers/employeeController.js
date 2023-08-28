@@ -209,17 +209,14 @@ exports.editEmployee = async (req, res) => {
   };
 
   if (req.body.password?.length >= 8) {
-    hashedPassword = await bcrypt.hash(password, 10);
+    hashedPassword = await bcrypt.hash(req.body.password, 10);
     editOpts.password = hashedPassword;
   }
 
   try {
-    const employee = await Employee.findOneAndUpdate(
-      { _id: id },
-      {
-        $set: editOpts,
-      }
-    );
+    const employee = await Employee.findByIdAndUpdate(id, {
+      $set: editOpts,
+    });
 
     if (!employee) {
       return res.status(400).send({

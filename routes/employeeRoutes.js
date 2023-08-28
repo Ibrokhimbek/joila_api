@@ -143,6 +143,7 @@ function employeeRoutes(fastify, options, done) {
         properties: {
           fullname: { type: "string" },
           phone_number: { type: "string" },
+          password: { type: "string" },
         },
       },
       params: {
@@ -165,6 +166,7 @@ function employeeRoutes(fastify, options, done) {
                 fullname: { type: "string" },
                 phone_number: { type: "string" },
                 employer_id: { type: "string" },
+                password: { type: "string" },
                 balance: { type: "number" },
                 debt: { type: "number" },
               },
