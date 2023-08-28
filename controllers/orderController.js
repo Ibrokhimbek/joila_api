@@ -290,7 +290,7 @@ exports.deleteOrder = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const order = await Order.findOneAndDelete({ _id: id });
+    const order = await Order.findByIdAndDelete(id);
 
     if (!order) {
       return res.status(400).send({
@@ -299,14 +299,18 @@ exports.deleteOrder = async (req, res) => {
     } else {
       const debt = order.totalAmount - order.paid;
 
-      const market = await Market.findById(market_id).exec();
-      market.debt -= debt;
-      await market.save();
+      const market = await Market.findById(order.market_id).exec();
+      if (market) {
+        market.debt -= debt;
+        await market.save();
+      }
 
       const employee = await Employee.findById(req.employeeId).exec();
-      employee.balance -= paid;
-      employee.debt -= debt;
-      await employee.save();
+      if (employee) {
+        employee.balance -= paid;
+        employee.debt -= debt;
+        await employee.save();
+      }
 
       return res.status(200).send({
         message: "Order successfully deleted",
@@ -314,7 +318,7 @@ exports.deleteOrder = async (req, res) => {
       });
     }
   } catch (error) {
-    return res.status(400).send({
+    return res.status(500).send({
       error,
     });
   }
