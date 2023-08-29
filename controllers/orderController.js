@@ -47,6 +47,9 @@ exports.addOrder = async (req, res) => {
 
     for (let i = 0; i < products.length; i++) {
       const cartItem = products[i];
+      const product = await Product.findById(cartItem.productId);
+      product.qty -= cartItem.qty;
+      await product.save();
       totalAmount += cartItem.qty * cartItem.price;
     }
     const debt = totalAmount - paid;
