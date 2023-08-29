@@ -77,6 +77,7 @@ fastify.listen(
   {
     port: 3000,
   },
+  "0.0.0.0",
   (err) => {
     if (err) {
       console.error(err);
