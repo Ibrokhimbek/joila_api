@@ -74,9 +74,7 @@ fastify.addHook("onClose", async () => {
 });
 
 fastify.listen(
-  {
-    port: 3000,
-  },
+  3000,
   "0.0.0.0",
   (err) => {
     if (err) {
