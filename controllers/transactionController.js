@@ -31,12 +31,14 @@ exports.getTransactions = async (req, res) => {
 
     if (search) {
       query = {
-        $or: [{ fromEmployeeId: employeeId }],
         $or: [{ amountPaid: { $regex: search, $options: "i" } }],
       };
     }
 
-    const transactions = await Transaction.find(query).sort({ createdAt: -1 });
+    const transactions = await Transaction.find(
+      { fromEmployeeId: employeeId },
+      query
+    ).sort({ createdAt: -1 });
     res.send({
       message: "All transactions",
       data: transactions,
