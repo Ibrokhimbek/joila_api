@@ -2,6 +2,7 @@ const Order = require("../models/Order");
 const Product = require("../models/Product");
 const Market = require("../models/Market");
 const Employee = require("../models/Employee");
+const { updateStatistics } = require("../utils/statisticsUpdate");
 
 //* POST => Add order
 exports.addOrder = async (req, res) => {
@@ -59,7 +60,7 @@ exports.addOrder = async (req, res) => {
       market.debt += debt;
       await market.save();
     }
-
+    console.log("It works");
     const employee = await Employee.findById(req.employeeId).exec();
     employee.balance += paid;
     employee.debt += debt;
@@ -70,6 +71,8 @@ exports.addOrder = async (req, res) => {
     //* creating an order
     const order = new Order(orderObj);
     await order.save();
+
+    await updateStatistics(order);
 
     return res.status(201).send({
       message: "Order successfully created",
