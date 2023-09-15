@@ -1,17 +1,17 @@
 const Statistics = require("../models/Statistic");
 
-exports.getStatistics = async (request, reply) => {
+exports.getStatistics = async (req, res) => {
   try {
-    const { year, month } = request.params;
+    const { year, month } = req.params;
     const statistics = await Statistics.findOne({ year, month });
 
     if (!statistics) {
-      reply.status(404).send({ error: "Statistics not found" });
+      res.status(404).send({ error: "Statistics not found" });
       return;
     }
 
-    reply.send(statistics);
+    res.send(statistics);
   } catch (error) {
-    reply.status(500).send({ error: "Error retrieving statistics" });
+    res.status(500).send({ error: "Error retrieving statistics" });
   }
 };
