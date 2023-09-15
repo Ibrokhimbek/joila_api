@@ -3,7 +3,7 @@ const BalanceHistory = require("../models/BalanceHistory");
 exports.getBalanceHistory = async (req, res) => {
   try {
     const { year, month } = req.query;
-    let query = { employerId: "64973ed92e6191dbf2270a10" };
+    let query = { employerId: req.employerId };
 
     if (year || month) {
       year ? (query.year = year) : null;
