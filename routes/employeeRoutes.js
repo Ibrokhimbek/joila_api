@@ -39,7 +39,7 @@ function employeeRoutes(fastify, options, done) {
 
   //* Get one employee
   fastify.get("/:id", {
-    preHandler: [auth(["admin", "employer"])],
+    preHandler: [auth(["admin", "employer", "employee"])],
     schema: {
       tags: ["Employee"],
       params: {

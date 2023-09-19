@@ -133,6 +133,14 @@ exports.getEmployer = async (req, res) => {
   const id = req.params.id;
 
   try {
+    if (id == "me") {
+      const employer = await Employer.findById(req.employerId).exec();
+      return res.status(200).send({
+        message: "Employer was found",
+        data: employer,
+      });
+    }
+
     const employer = await Employer.findOne({ _id: id }).exec();
 
     if (!employer) {

@@ -152,6 +152,15 @@ exports.getEmployee = async (req, res) => {
   const id = req.params.id;
 
   try {
+    if (id == "me") {
+      const employee = await Employee.findOne({ _id: req.employeeId }).exec();
+
+      return res.status(200).send({
+        message: "Employee was found",
+        data: employee,
+      });
+    }
+
     const employee = await Employee.findOne({ _id: id }).exec();
 
     if (!employee) {
