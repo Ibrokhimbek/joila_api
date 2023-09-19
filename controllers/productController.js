@@ -1,4 +1,6 @@
 const Product = require("../models/Product");
+const { months } = require("../utils/date");
+const Statistics = require("../models/Statistic");
 
 //* POST => Add product
 exports.addProduct = async (req, res) => {
@@ -27,6 +29,25 @@ exports.addProduct = async (req, res) => {
     } else {
       findProd.qty += qty;
       await findProd.save();
+      const date = new Date();
+
+      const statistics = await Statistics.findOne({
+        year: date.getFullYear(),
+        month: months[date.getMonth()],
+      });
+
+      const updatedProds = statistics.products.map((product) => {
+        if (product.productId == findProd._id) {
+          product.inStoreQty += qty;
+          return product;
+        } else {
+          return product;
+        }
+      });
+
+      statistics.products = updatedProds;
+      await statistics.save();
+
       return res.status(200).send({
         message: "Product successfully updated",
         findProd,

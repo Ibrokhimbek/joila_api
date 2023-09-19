@@ -11,6 +11,10 @@ const statisticSchema = new Schema(
       type: String,
       required: true,
     },
+    employerId: {
+      type: String,
+      required: true,
+    },
     products: {
       type: [
         {
