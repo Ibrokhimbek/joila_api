@@ -7,9 +7,13 @@ exports.updateStatistics = async function (order, employerId) {
   const date = new Date();
   const statistics = await Statistic.findOne({
     employerId: employerId,
-    // month: months[date.getMonth()],
-    // year: date.getFullYear(),
+    month: months[date.getMonth()],
+    year: date.getFullYear(),
   });
+
+  if (!statistics) {
+    return;
+  }
 
   //? Update the statistics with the new order data
   for (const product of products) {
