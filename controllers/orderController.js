@@ -60,7 +60,7 @@ exports.addOrder = async (req, res) => {
       market.debt += debt;
       await market.save();
     }
-    console.log("It works");
+
     const employee = await Employee.findById(req.employeeId).exec();
     employee.balance += paid;
     employee.debt += debt;
@@ -72,7 +72,7 @@ exports.addOrder = async (req, res) => {
     const order = new Order(orderObj);
     await order.save();
 
-    await updateStatistics(order);
+    await updateStatistics(order, req.employerId);
 
     return res.status(201).send({
       message: "Order successfully created",

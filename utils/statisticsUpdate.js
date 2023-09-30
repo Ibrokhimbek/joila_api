@@ -2,10 +2,11 @@ const Product = require("../models/Product");
 const Statistic = require("../models/Statistic");
 const { months } = require("./date");
 
-exports.updateStatistics = async function (order) {
+exports.updateStatistics = async function (order, employerId) {
   const { products } = order;
   const date = new Date();
   const statistics = await Statistic.findOne({
+    employerId: employerId,
     month: months[date.getMonth()],
     year: date.getFullYear(),
   });
