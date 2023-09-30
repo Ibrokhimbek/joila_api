@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Employer = require("../models/Employer");
+const Statistic = require("../models/Statistic");
+const { months } = require("../utils/date");
 
 //* POST => Register employer
 exports.registerEmployer = async (req, res) => {
@@ -34,8 +36,8 @@ exports.registerEmployer = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(req.adminId);
-    // Creating new employer
+
+    //? Creating new employer
     const employer = new Employer({
       fullname,
       phone_number,
@@ -44,16 +46,27 @@ exports.registerEmployer = async (req, res) => {
     });
 
     await employer.save();
+
+    //* Create statistics object for this employer
+    const date = new Date();
+
+    const statistic = new Statistic({
+      month: months[date.getMonth()],
+      year: date.getFullYear(),
+      products: [],
+      employerId: employer._id,
+    });
+    await statistic.save();
+
+    res.status(201).send({
+      message: "Employer created successfully",
+    });
   } catch (error) {
     return res.status(500).send({
       error: "An error occurred while creating the employer",
       description: error,
     });
   }
-
-  res.status(201).send({
-    message: "Employer created successfully",
-  });
 };
 
 //* POST => Login employer

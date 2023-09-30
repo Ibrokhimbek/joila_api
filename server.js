@@ -31,11 +31,6 @@ fastify.register(require("@fastify/swagger"), {
 });
 
 const mongoose = require("mongoose");
-const Statistic = require("./models/Statistic");
-const { months } = require("./utils/date");
-const { isLastDayOfMonth } = require("./utils/isLastDayOfMonth");
-const Employer = require("./models/Employer");
-const BalanceHistory = require("./models/BalanceHistory");
 
 fastify.get("/", { schema: { tags: ["API"] } }, (req, res) => {
   res.send("Api is working");
@@ -69,44 +64,12 @@ fastify.register(require("./routes/balanceHistoryRoutes"), {
 });
 
 //? Schedule the task to run on the first day of each month at 00:00 AM
-cron.schedule("0 0 1 * *", async () => {
-  const date = new Date();
-
-  const statistic = new Statistic({
-    month: months[date.getMonth()],
-    year: date.getFullYear(),
-    products: [],
-  });
-  await statistic.save();
-});
+const { createStatistics } = require("./utils/createStatistics");
+cron.schedule("0 0 1 * *", createStatistics);
 
 //? Schedule the task to run on the last day of the month at 23:59 PM
-cron.schedule("59 23 28-31 * *", async () => {
-  const currentDate = new Date();
-
-  //* Check if it's the last day of the month
-  if (isLastDayOfMonth(currentDate)) {
-    //* Get all employers
-    const employers = await Employer.find({});
-
-    //* Create balanceHistory for each employer
-    for (const employer of employers) {
-      const month = months[currentDate.getMonth()];
-      const year = currentDate.getFullYear();
-
-      const balanceHistory = new BalanceHistory({
-        month,
-        year,
-        balance: employer.balance,
-        employerId: employer._id,
-      });
-
-      await balanceHistory.save();
-      employer.balance = 0;
-      await employer.save();
-    }
-  }
-});
+const { balanceHistorySaver } = require("./utils/balanceHistorySaver");
+cron.schedule("59 23 28-31 * *", balanceHistorySaver);
 
 //? Database setup
 // mongoose
