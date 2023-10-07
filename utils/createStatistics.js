@@ -1,5 +1,6 @@
 const Employer = require("../models/Employer");
 const Statistic = require("../models/Statistic");
+const months = require("./date");
 
 exports.createStatistics = async () => {
   const date = new Date();

@@ -68,14 +68,14 @@ const { createStatistics } = require("./utils/createStatistics");
 // cron.schedule("0 0 1 * *", createStatistics);
 setInterval(() => {
   createStatistics();
-}, 1000 * 60 * 60);
+}, 1000 * 60 * 60 * 24);
 
 //? Schedule the task to run on the last day of the month at 23:59 PM
 const { balanceHistorySaver } = require("./utils/balanceHistorySaver");
 // cron.schedule("59 23 28-31 * *", balanceHistorySaver);
 setInterval(() => {
   balanceHistorySaver();
-}, 1000 * 60 * 60);
+}, 1000 * 60 * 60 * 24);
 
 //? Database setup
 // mongoose
